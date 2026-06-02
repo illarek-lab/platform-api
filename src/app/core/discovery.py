@@ -6,14 +6,12 @@ from fastapi import FastAPI
 
 
 def _import_project_module(project_name: str):
-    """Load project entry module (router.py or route.py)."""
-    for module_name in ("router", "route"):
-        module_path = f"app.projects.{project_name}.{module_name}"
-        try:
-            return importlib.import_module(module_path)
-        except ModuleNotFoundError:
-            continue
-    return None
+    """Load project entry module (`router.py`)."""
+    module_path = f"app.projects.{project_name}.api.router"
+    try:
+        return importlib.import_module(module_path)
+    except ModuleNotFoundError:
+        return None
 
 
 def load_projects(app: FastAPI):
@@ -28,7 +26,7 @@ def load_projects(app: FastAPI):
         try:
             module = _import_project_module(m.name)
             if module is None:
-                print(f"⚠ No router/route module in {m.name}")
+                print(f"⚠ No router.py in {m.name}")
                 continue
 
             router = getattr(module, "router", None)
