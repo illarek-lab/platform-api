@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from sqlalchemy import BigInteger, Boolean, DateTime, String, Text, func
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.projects.layout_example.infra.orm.base import Base
@@ -13,7 +12,7 @@ class FileORM(Base):
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
 
     project_slug: Mapped[str] = mapped_column(Text, nullable=False)
-    user_id: Mapped[str] = mapped_column(PG_UUID(as_uuid=False), nullable=False)
+    user_id: Mapped[str] = mapped_column(Text, nullable=False)
 
     storage_provider: Mapped[str] = mapped_column(Text, nullable=False)
     bucket: Mapped[str] = mapped_column(Text, nullable=False)

@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -8,7 +7,7 @@ from pydantic import BaseModel
 class File(BaseModel):
     id: int
     project_slug: str
-    user_id: UUID
+    user_id: str
     storage_provider: str
     bucket: str
     object_key: str
