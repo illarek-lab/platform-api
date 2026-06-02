@@ -29,6 +29,14 @@ class StorageClient:
         async with self._session.client("s3", **self._client_kwargs) as s3:
             await s3.delete_object(Bucket=self._bucket, Key=key)
 
+    async def get_upload_url(self, key: str, content_type: str, expires_in: int = 3600) -> str:
+        async with self._session.client("s3", **self._client_kwargs) as s3:
+            return await s3.generate_presigned_url(
+                "put_object",
+                Params={"Bucket": self._bucket, "Key": key, "ContentType": content_type},
+                ExpiresIn=expires_in,
+            )
+
     async def get_url(self, key: str, expires_in: int = 3600) -> str:
         async with self._session.client("s3", **self._client_kwargs) as s3:
             return await s3.generate_presigned_url(

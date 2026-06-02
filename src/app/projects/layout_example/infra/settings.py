@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     REDIS_URL: str
 
     # Storage
+    OBJECT_STORAGE_PROVIDER: str = "r2"
     OBJECT_STORAGE_BUCKET: str
     OBJECT_STORAGE_ENDPOINT: str
     OBJECT_STORAGE_ACCESS_KEY: str
