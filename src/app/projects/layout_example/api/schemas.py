@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
 
 from pydantic import BaseModel, EmailStr
 
@@ -50,7 +49,7 @@ class ConfirmUploadRequest(BaseModel):
 class FileResponse(BaseModel):
     id: int
     project_slug: str
-    user_id: UUID
+    user_id: str
     storage_provider: str
     bucket: str
     object_key: str
