@@ -18,5 +18,6 @@ class File(BaseModel):
     size_bytes: Optional[int] = None
     is_public: bool = False
     uploaded_at: datetime
+    deleted_at: Optional[datetime] = None
 
     model_config = {"from_attributes": True}

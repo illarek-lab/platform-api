@@ -12,3 +12,15 @@ class UserAlreadyExistsError(AuthError):
 
 class InvalidGoogleTokenError(AuthError):
     pass
+
+
+class StorageError(Exception):
+    pass
+
+
+class StorageFileNotFoundError(StorageError):
+    pass
+
+
+class StorageAccessError(StorageError):
+    pass
