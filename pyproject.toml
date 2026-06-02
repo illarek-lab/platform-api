@@ -12,6 +12,7 @@ dependencies = [
     # Configuration
     "pydantic>=2.11.9",
     "pydantic-settings>=2.11.0",
+    "email-validator>=2.2.0",
     # HTTP Client
     "httpx>=0.28.1",
     # PostgreSQL
@@ -25,6 +26,7 @@ dependencies = [
     # OAuth 2.1 / OIDC
     "authlib>=1.6.4",
     "pyjwt[crypto]>=2.10.1",
+    "passlib[bcrypt]>=1.7.4",
     # File Uploads
     "python-multipart>=0.0.20",
     # Cloudflare R2 (S3 compatible)

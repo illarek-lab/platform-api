@@ -1,25 +1,43 @@
 import importlib
 import pkgutil
-from fastapi import FastAPI, APIRouter
-from app.projects import __path__ as projects_path
+
+import app.projects as projects
+from fastapi import FastAPI
+
+
+def _import_project_module(project_name: str):
+    """Load project entry module (router.py or route.py)."""
+    for module_name in ("router", "route"):
+        module_path = f"app.projects.{project_name}.{module_name}"
+        try:
+            return importlib.import_module(module_path)
+        except ModuleNotFoundError:
+            continue
+    return None
 
 
 def load_projects(app: FastAPI):
 
-    for module_info in pkgutil.iter_modules(projects_path):
+    print("🔍 Scanning projects...")
 
-        module_name = module_info.name
-        module_path = f"app.projects.{module_name}.router"
+    print("PATH:", projects.__path__)
+
+    for m in pkgutil.iter_modules(projects.__path__):
+        print("FOUND MODULE:", m.name)
 
         try:
-            module = importlib.import_module(module_path)
+            module = _import_project_module(m.name)
+            if module is None:
+                print(f"⚠ No router/route module in {m.name}")
+                continue
 
-            router: APIRouter = getattr(module, "router", None)
+            router = getattr(module, "router", None)
 
             if router:
-                app.include_router(router, prefix=f"/{module_name}", tags=[module_name])
+                app.include_router(router, prefix=f"/{m.name}")
+                print(f"✔ LOADED: {m.name}")
+            else:
+                print(f"⚠ No `router` object in {m.name}")
 
-                print(f"✔ Loaded project: {module_name}")
-
-        except ModuleNotFoundError:
-            print(f"⚠ No router found in {module_name}")
+        except Exception as e:
+            print(f"❌ ERROR {m.name}: {e}")
