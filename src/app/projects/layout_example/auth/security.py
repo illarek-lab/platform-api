@@ -1,19 +1,17 @@
-from passlib.context import CryptContext
-import jwt
 import datetime
+
+import bcrypt
+import jwt
 
 from app.projects.layout_example.config.settings import settings
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 
 def verify_password(password: str, hashed: str) -> bool:
-    return pwd_context.verify(password, hashed)
+    return bcrypt.checkpw(password.encode(), hashed.encode())
 
 
 def create_token(user_id: str, email: str):
