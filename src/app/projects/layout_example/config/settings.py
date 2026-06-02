@@ -1,4 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pathlib import Path
+
+
+PROJECT_NAME = Path(__file__).resolve().parents[1].name
+BASE_DIR = Path(__file__).resolve().parents[5]  # repo root (…/platform-api)
 
 
 class Settings(BaseSettings):
@@ -31,8 +36,9 @@ class Settings(BaseSettings):
     OBJECT_STORAGE_REGION: str
 
     # Auth
-    OIDC_ISSUER: str
-    OIDC_AUDIENCE: str
+    SECRET_KEY: str
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 120
 
     GOOGLE_CLIENT_ID: str
     GOOGLE_CLIENT_SECRET: str
@@ -47,7 +53,8 @@ class Settings(BaseSettings):
     SEED_ADMIN_DOCUMENT_ID: str
 
     model_config = SettingsConfigDict(
-        env_file="credentials/layout_example.env", extra="ignore"
+        env_file=BASE_DIR / "credentials" / f"{PROJECT_NAME}.env",
+        extra="ignore",
     )
 
 
