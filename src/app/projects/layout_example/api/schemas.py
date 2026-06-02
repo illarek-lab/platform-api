@@ -23,6 +23,45 @@ class RegisterResponse(BaseModel):
     user_id: str
 
 
+# ── Storage ──────────────────────────────────────────────────────────────────
+
+class UploadUrlRequest(BaseModel):
+    file_name: str
+    content_type: str
+    size_bytes: Optional[int] = None
+    is_public: bool = False
+    expires_in: int = 3600
+
+
+class UploadUrlResponse(BaseModel):
+    upload_url: str
+    object_key: str
+    expires_in: int
+
+
+class ConfirmUploadRequest(BaseModel):
+    object_key: str
+    file_name: str
+    content_type: Optional[str] = None
+    size_bytes: Optional[int] = None
+    is_public: bool = False
+
+
+class FileResponse(BaseModel):
+    id: int
+    project_slug: str
+    user_id: UUID
+    storage_provider: str
+    bucket: str
+    object_key: str
+    url: Optional[str] = None
+    file_name: str
+    content_type: Optional[str] = None
+    size_bytes: Optional[int] = None
+    is_public: bool
+    uploaded_at: datetime
+
+
 class GeoEventCreate(BaseModel):
     user_id: Optional[UUID] = None
     latitude: float

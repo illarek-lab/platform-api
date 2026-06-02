@@ -8,6 +8,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.projects.layout_example.domain.auth_service import AuthService
 from app.projects.layout_example.infra.clients.google import GoogleOAuthClient
 from app.projects.layout_example.infra.db.postgres import async_session
+from app.projects.layout_example.domain.storage_service import StorageService
+from app.projects.layout_example.infra.clients.storage import storage_client
+from app.projects.layout_example.infra.repositories.file_orm_repo import FileORMRepository
 from app.projects.layout_example.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
 from app.projects.layout_example.infra.repositories.geo_event_repo import GeoEventRepository
 from app.projects.layout_example.infra.repositories.user_repo import UserRepository
@@ -35,6 +38,10 @@ def get_geo_event_repo(session: AsyncSession = Depends(get_db_session)) -> GeoEv
 
 def get_geo_event_orm_repo(session: AsyncSession = Depends(get_db_session)) -> GeoEventORMRepository:
     return GeoEventORMRepository(session)
+
+
+def get_storage_service(session: AsyncSession = Depends(get_db_session)) -> StorageService:
+    return StorageService(FileORMRepository(session), storage_client)
 
 
 def get_current_user(token=Depends(security)):
