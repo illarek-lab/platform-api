@@ -1,15 +1,14 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from app.projects.layout_example.config.settings import settings
+from app.projects.layout_example.infra.settings import settings
 
 
 class MongoDB:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = AsyncIOMotorClient(settings.MONGO_URI)
         self.db = self.client[settings.MONGO_DATABASE]
 
 
 mongo = MongoDB()
-
 database = mongo.db
