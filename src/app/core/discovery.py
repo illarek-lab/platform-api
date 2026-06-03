@@ -1,12 +1,14 @@
 import importlib
 import pkgutil
+from typing import Any
 
 import app.projects as projects
 from fastapi import FastAPI
 
+registry: list[dict[str, Any]] = []
+
 
 def _import_project_module(project_name: str):
-    """Load project entry module (`router.py`)."""
     module_path = f"app.projects.{project_name}.api.router"
     try:
         return importlib.import_module(module_path)
@@ -14,10 +16,22 @@ def _import_project_module(project_name: str):
         return None
 
 
+def _collect_routes(router) -> list[str]:
+    paths = []
+    for route in getattr(router, "routes", []):
+        path = getattr(route, "path", None)
+        methods = getattr(route, "methods", None)
+        if path and methods:
+            for method in sorted(methods):
+                paths.append(f"{method} {path}")
+    return paths
+
+
 def load_projects(app: FastAPI):
+    global registry
+    registry = []
 
     print("🔍 Scanning projects...")
-
     print("PATH:", projects.__path__)
 
     for m in pkgutil.iter_modules(projects.__path__):
@@ -32,7 +46,13 @@ def load_projects(app: FastAPI):
             router = getattr(module, "router", None)
 
             if router:
-                app.include_router(router, prefix=f"/{m.name}")
+                prefix = f"/{m.name}"
+                app.include_router(router, prefix=prefix)
+                registry.append({
+                    "name": m.name,
+                    "prefix": prefix,
+                    "routes": _collect_routes(router),
+                })
                 print(f"✔ LOADED: {m.name}")
             else:
                 print(f"⚠ No `router` object in {m.name}")
