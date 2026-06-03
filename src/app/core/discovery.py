@@ -28,8 +28,7 @@ def _collect_routes(router) -> list[str]:
 
 
 def load_projects(app: FastAPI):
-    global registry
-    registry = []
+    registry.clear()
 
     print("🔍 Scanning projects...")
     print("PATH:", projects.__path__)
