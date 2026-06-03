@@ -1114,7 +1114,7 @@
                       "const json = pm.response.json();",
                       "pm.test('upload_url present', () => pm.expect(json.upload_url).to.be.a('string'));",
                       "pm.test('object_key present', () => pm.expect(json.object_key).to.be.a('string'));",
-                      "pm.collectionVariables.set('objectKey', json.object_url);",
+                      "pm.collectionVariables.set('objectKey', json.object_key);",
                       "pm.collectionVariables.set('uploadUrl', json.upload_url);"
                     ]
                   }
@@ -1167,6 +1167,78 @@
               ]
             },
             {
+              "name": "PUT — Upload file to R2/S3 (Step 2)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                      "pm.test('body empty', () => pm.expect(pm.response.text()).to.eql(''));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": { "type": "noauth" },
+                "method": "PUT",
+                "header": [
+                  { "key": "Content-Type", "value": "image/jpeg", "description": "Debe coincidir exactamente con el content_type enviado en Step 1" }
+                ],
+                "body": {
+                  "mode": "file",
+                  "file": { "src": "" }
+                },
+                "url": "{{uploadUrl}}",
+                "description": "**Step 2 del flujo de upload** — PUT directo a R2/S3 usando la presigned URL del Step 1.\n\n⚠️ **No pases Authorization header** — la URL ya está firmada con las credenciales de R2/S3.\n\n⚠️ **Content-Type debe coincidir exactamente** con el `content_type` enviado en Step 1 (e.g. `image/jpeg`). Si no coincide, R2 responde `403 SignatureDoesNotMatch`.\n\n### Setup en Postman\n1. URL: `{{uploadUrl}}` (se llena automáticamente si ejecutaste Step 1)\n2. Auth: `No Auth`\n3. Header: `Content-Type: image/jpeg`\n4. Body → `binary` → selecciona el archivo\n\n### Respuesta esperada\n- `200 OK` con body vacío → upload exitoso\n- `403 SignatureDoesNotMatch` → Content-Type no coincide con Step 1\n- `403 AccessDenied` → URL expirada o inválida"
+              },
+              "response": [
+                {
+                  "name": "200 OK — archivo subido",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [{ "key": "Content-Type", "value": "image/jpeg" }],
+                    "body": { "mode": "file", "file": { "src": "" } },
+                    "url": "{{uploadUrl}}"
+                  },
+                  "status": "OK", "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                },
+                {
+                  "name": "403 — Content-Type no coincide (SignatureDoesNotMatch)",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [{ "key": "Content-Type", "value": "application/octet-stream" }],
+                    "body": { "mode": "file", "file": { "src": "" } },
+                    "url": "{{uploadUrl}}"
+                  },
+                  "status": "Forbidden", "code": 403,
+                  "_postman_previewlanguage": "xml",
+                  "header": [{ "key": "Content-Type", "value": "application/xml" }],
+                  "cookie": [],
+                  "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error>\n  <Code>SignatureDoesNotMatch</Code>\n  <Message>The request signature we calculated does not match the signature you provided.</Message>\n</Error>"
+                },
+                {
+                  "name": "403 — URL expirada (RequestTimeTooSkewed)",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [{ "key": "Content-Type", "value": "image/jpeg" }],
+                    "body": { "mode": "file", "file": { "src": "" } },
+                    "url": "{{uploadUrl}}"
+                  },
+                  "status": "Forbidden", "code": 403,
+                  "_postman_previewlanguage": "xml",
+                  "header": [{ "key": "Content-Type", "value": "application/xml" }],
+                  "cookie": [],
+                  "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error>\n  <Code>RequestTimeTooSkewed</Code>\n  <Message>The difference between the request time and the current time is too large.</Message>\n</Error>"
+                }
+              ]
+            },
+            {
               "name": "Confirm upload",
               "event": [
                 {
@@ -1192,7 +1264,7 @@
                 "header": [{ "key": "Content-Type", "value": "application/json" }],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"object_key\": \"layout_example/64f1a2b3c4d5e6f7a8b9c0d1/a1b2c3d4-e5f6-7890-abcd-ef1234567890.jpg\",\n  \"file_name\": \"photo.jpg\",\n  \"content_type\": \"image/jpeg\",\n  \"size_bytes\": 204800,\n  \"is_public\": false\n}",
+                  "raw": "{\n  \"object_key\": \"{{objectKey}}\",\n  \"file_name\": \"photo.jpg\",\n  \"content_type\": \"image/jpeg\",\n  \"size_bytes\": 204800,\n  \"is_public\": false\n}",
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": "{{baseUrl}}/{{projectSlug}}/storage/confirm",
