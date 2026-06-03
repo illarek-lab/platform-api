@@ -65,6 +65,14 @@ Leave everything else **unchecked**.
 
 > **Require review from Code Owners** enforces `@johnkbarrera` as the mandatory approver on every PR — it reads from `.github/CODEOWNERS`.
 
+### Bypass list — owner exception
+
+Before saving, find the **Bypass list** section and add:
+
+- Click **"Add bypass"** → search `@johnkbarrera` → select **Repository admin**
+
+This allows `@johnkbarrera` to push directly to `main` when needed, while everyone else must go through a PR.
+
 4. Click **"Create"**
 
 ---
