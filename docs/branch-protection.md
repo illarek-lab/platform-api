@@ -54,14 +54,15 @@ To find your GitHub username: go to [github.com](https://github.com) → click y
 
 Click **"Add target"** → **Include by pattern** → type `main` → confirm.
 
-### Branch rules — enable only these two
+### Branch rules — enable only this one
 
-- [x] **Restrict updates** — blocks any direct push to `main`
 - [x] **Require a pull request before merging**
   - Required approvals: `1`
   - [x] Require review from Code Owners
 
-Leave everything else **unchecked**.
+Leave everything else **unchecked**, including **Restrict updates**.
+
+> Do NOT enable **Restrict updates** — it blocks PR merges too, not just direct pushes. `Require a pull request` alone is enough to prevent direct pushes while still allowing PRs to be merged.
 
 > **Require review from Code Owners** enforces `@johnkbarrera` as the mandatory approver on every PR — it reads from `.github/CODEOWNERS`.
 
