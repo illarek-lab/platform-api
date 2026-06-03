@@ -32,16 +32,6 @@ jobs:
             cd ~/open_projects/platform-api
             ~/.local/bin/uv sync
 
-      - name: 🗄️ Run migrations
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd ~/open_projects/platform-api
-            ~/.local/bin/uv run alembic upgrade head
-
       - name: 🔄 Restart service
         uses: appleboy/ssh-action@v1.0.3
         with:
