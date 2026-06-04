@@ -10,8 +10,10 @@
     { "key": "projectSlug",  "value": "layout_example",        "type": "string" },
     { "key": "email",        "value": "admin@mobileapi.com",   "type": "string" },
     { "key": "password",     "value": "Admin1234!",            "type": "string" },
-    { "key": "googleIdToken","value": "",                       "type": "string" },
-    { "key": "accessToken",  "value": "",                       "type": "string" },
+    { "key": "googleIdToken", "value": "",                       "type": "string" },
+    { "key": "deviceId",      "value": "device-test-001",        "type": "string" },
+    { "key": "accessToken",   "value": "",                       "type": "string" },
+    { "key": "refreshToken",  "value": "",                       "type": "string" },
     { "key": "userId",       "value": "",                       "type": "string" },
     { "key": "geoEventId",   "value": "",                       "type": "string" },
     { "key": "fileId",       "value": "",                       "type": "string" },
@@ -216,8 +218,10 @@
                       "if (pm.response.code === 200) {",
                       "    const json = pm.response.json();",
                       "    pm.test('access_token', () => pm.expect(json.access_token).to.be.a('string'));",
+                      "    pm.test('refresh_token', () => pm.expect(json.refresh_token).to.be.a('string'));",
                       "    pm.test('token_type bearer', () => pm.expect(json.token_type).to.eql('bearer'));",
                       "    pm.collectionVariables.set('accessToken', json.access_token);",
+                      "    pm.collectionVariables.set('refreshToken', json.refresh_token);",
                       "}"
                     ]
                   }
@@ -229,7 +233,7 @@
                 "header": [{ "key": "Content-Type", "value": "application/json" }],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+                  "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"device_id\": \"{{deviceId}}\"\n}",
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": "{{baseUrl}}/{{projectSlug}}/auth/login",
@@ -277,7 +281,9 @@
                       "if (pm.response.code === 200) {",
                       "    const json = pm.response.json();",
                       "    pm.test('access_token', () => pm.expect(json.access_token).to.be.a('string'));",
+                      "    pm.test('refresh_token', () => pm.expect(json.refresh_token).to.be.a('string'));",
                       "    pm.collectionVariables.set('accessToken', json.access_token);",
+                      "    pm.collectionVariables.set('refreshToken', json.refresh_token);",
                       "}"
                     ]
                   }
@@ -289,7 +295,7 @@
                 "header": [{ "key": "Content-Type", "value": "application/json" }],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"token\": \"{{googleIdToken}}\"\n}",
+                  "raw": "{\n  \"token\": \"{{googleIdToken}}\",\n  \"device_id\": \"{{deviceId}}\"\n}",
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": "{{baseUrl}}/{{projectSlug}}/auth/google",
@@ -323,6 +329,73 @@
                   "header": [{ "key": "Content-Type", "value": "application/json" }],
                   "cookie": [],
                   "body": "{\n  \"detail\": \"Invalid Google token\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Refresh token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const json = pm.response.json();",
+                      "    pm.test('access_token', () => pm.expect(json.access_token).to.be.a('string'));",
+                      "    pm.test('refresh_token rotated', () => pm.expect(json.refresh_token).to.be.a('string'));",
+                      "    pm.collectionVariables.set('accessToken', json.access_token);",
+                      "    pm.collectionVariables.set('refreshToken', json.refresh_token);",
+                      "}",
+                      "if (pm.response.code === 401) {",
+                      "    pm.test('invalid refresh token', () => {",
+                      "        pm.expect(pm.response.json().detail).to.include('refresh token');",
+                      "    });",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": { "type": "noauth" },
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refresh_token\": \"{{refreshToken}}\",\n  \"device_id\": \"{{deviceId}}\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": "{{baseUrl}}/{{projectSlug}}/auth/refresh-token",
+                "description": "`POST /{projectSlug}/auth/refresh-token`\n\nRota el refresh token: invalida el token enviado y genera un nuevo par `access_token` + `refresh_token`.\n\n**Body** (`RefreshTokenRequest`): `refresh_token`\n\n| Status | Respuesta |\n|--------|----------|\n| 200 | `TokenResponse` con nuevo `access_token` + `refresh_token` |\n| 401 | `{ \"detail\": \"Invalid or expired refresh token\" }` |\n\nEl `refreshToken` de colección se actualiza automáticamente en Tests.\n\n**Flujo recomendado:** Login → usar `accessToken` → cuando expire, llamar este endpoint con `refreshToken` para obtener nuevos tokens sin pedir credenciales."
+              },
+              "response": [
+                {
+                  "name": "200 OK — tokens rotados",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [{ "key": "Content-Type", "value": "application/json" }],
+                    "body": { "mode": "raw", "raw": "{\n  \"refresh_token\": \"abc123...\"\n}", "options": { "raw": { "language": "json" } } },
+                    "url": "{{baseUrl}}/{{projectSlug}}/auth/refresh-token"
+                  },
+                  "status": "OK", "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [{ "key": "Content-Type", "value": "application/json" }],
+                  "cookie": [],
+                  "body": "{\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"refresh_token\": \"xyz789...\",\n  \"token_type\": \"bearer\"\n}"
+                },
+                {
+                  "name": "401 — Refresh token inválido o expirado",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [{ "key": "Content-Type", "value": "application/json" }],
+                    "body": { "mode": "raw", "raw": "{\n  \"refresh_token\": \"invalid_or_already_used\"\n}", "options": { "raw": { "language": "json" } } },
+                    "url": "{{baseUrl}}/{{projectSlug}}/auth/refresh-token"
+                  },
+                  "status": "Unauthorized", "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [{ "key": "Content-Type", "value": "application/json" }],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": \"Invalid or expired refresh token\"\n}"
                 }
               ]
             },
