@@ -1,7 +1,14 @@
+import datetime
 from typing import Any, Optional, Protocol
 
 from app.projects.layout_example.domain.models.file import File
 from app.projects.layout_example.domain.models.geo_event import GeoEvent
+
+
+class IRefreshTokenRepository(Protocol):
+    async def create(self, token: str, user_id: str, email: str, expires_at: datetime.datetime, device_id: Optional[str]) -> None: ...
+    async def find(self, token: str) -> Optional[dict[str, Any]]: ...
+    async def delete(self, token: str) -> None: ...
 
 
 class IUserRepository(Protocol):

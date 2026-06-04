@@ -13,6 +13,7 @@ from app.projects.layout_example.infra.clients.storage import storage_client
 from app.projects.layout_example.infra.repositories.file_orm_repo import FileORMRepository
 from app.projects.layout_example.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
 from app.projects.layout_example.infra.repositories.geo_event_repo import GeoEventRepository
+from app.projects.layout_example.infra.repositories.refresh_token_repo import RefreshTokenRepository
 from app.projects.layout_example.infra.repositories.user_repo import UserRepository
 from app.projects.layout_example.infra.settings import settings
 
@@ -20,7 +21,8 @@ security = HTTPBearer()
 
 _user_repo = UserRepository()
 _google_client = GoogleOAuthClient()
-_auth_service = AuthService(_user_repo, _google_client)
+_refresh_token_repo = RefreshTokenRepository()
+_auth_service = AuthService(_user_repo, _google_client, _refresh_token_repo, settings.REFRESH_TOKEN_EXPIRE_DAYS)
 
 
 def get_auth_service() -> AuthService:

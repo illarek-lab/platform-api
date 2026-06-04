@@ -8,15 +8,23 @@ from pydantic import BaseModel, EmailStr
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+    device_id: Optional[str] = None
 
 
 class GoogleLoginRequest(BaseModel):
     token: str
+    device_id: Optional[str] = None
 
 
 class TokenResponse(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str = "bearer"
+
+
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+    device_id: Optional[str] = None
 
 
 class RegisterResponse(BaseModel):

@@ -14,6 +14,10 @@ class InvalidGoogleTokenError(AuthError):
     pass
 
 
+class InvalidRefreshTokenError(AuthError):
+    pass
+
+
 class StorageError(Exception):
     pass
 
