@@ -400,6 +400,51 @@
               ]
             },
             {
+              "name": "Logout",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 204) {",
+                      "    pm.test('logged out', () => pm.response.to.have.status(204));",
+                      "    pm.collectionVariables.set('refreshToken', '');",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": { "type": "noauth" },
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refresh_token\": \"{{refreshToken}}\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": "{{baseUrl}}/{{projectSlug}}/auth/logout",
+                "description": "`POST /{projectSlug}/auth/logout`\n\nElimina el refresh token de Mongo (`mobile_refresh_tokens`), invalidando la sesión de ese dispositivo. No revoca el `access_token` actual hasta que expire, pero impide renovarlo.\n\n**Body** (`LogoutRequest`): `refresh_token`\n\n| Status | Respuesta |\n|--------|----------|\n| 204 | Sin contenido |\n\nIdempotente: si el token ya no existe, igual responde 204."
+              },
+              "response": [
+                {
+                  "name": "204 No Content — sesión cerrada",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [{ "key": "Content-Type", "value": "application/json" }],
+                    "body": { "mode": "raw", "raw": "{\n  \"refresh_token\": \"xyz789...\"\n}", "options": { "raw": { "language": "json" } } },
+                    "url": "{{baseUrl}}/{{projectSlug}}/auth/logout"
+                  },
+                  "status": "No Content", "code": 204,
+                  "_postman_previewlanguage": "json",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            },
+            {
               "name": "Me (current user)",
               "event": [
                 {
