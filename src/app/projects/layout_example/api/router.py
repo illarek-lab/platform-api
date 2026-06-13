@@ -5,13 +5,14 @@ from app.projects.layout_example.api.geo_events import router as geo_events_rout
 from app.projects.layout_example.api.geo_events_orm import router as geo_events_orm_router
 from app.projects.layout_example.api.graphql.router import router as graphql_router
 from app.projects.layout_example.api.storage import router as storage_router
+from app.projects.layout_example.infra.settings import PROJECT_NAME
 
 router = APIRouter()
 
 
 @router.get("/health")
 async def health():
-    return {"project": "layout_example", "status": "ok"}
+    return {"project": PROJECT_NAME, "status": "ok"}
 
 
 router.include_router(auth_router)
