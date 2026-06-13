@@ -69,6 +69,9 @@ class AuthService:
 
         return google_id, email
 
+    async def logout(self, refresh_token: str) -> None:
+        await self._refresh_token_repo.delete(refresh_token)
+
     async def create_refresh_token(self, user_id: str, email: str, device_id: Optional[str] = None) -> str:
         token, expires_at = generate_refresh_token_value(self._refresh_token_expire_days)
         await self._refresh_token_repo.create(token, user_id, email, expires_at, device_id)

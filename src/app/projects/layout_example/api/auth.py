@@ -4,6 +4,7 @@ from app.projects.layout_example.api.deps import get_auth_service, get_current_u
 from app.projects.layout_example.api.schemas import (
     GoogleLoginRequest,
     LoginRequest,
+    LogoutRequest,
     RefreshTokenRequest,
     RegisterResponse,
     TokenResponse,
@@ -56,6 +57,11 @@ async def refresh_token(payload: RefreshTokenRequest, service: AuthService = Dep
         return TokenResponse(access_token=create_token(user_id, email), refresh_token=new_refresh_token)
     except InvalidRefreshTokenError:
         raise HTTPException(status_code=401, detail="Invalid or expired refresh token") from None
+
+
+@router.post("/logout", status_code=204)
+async def logout(payload: LogoutRequest, service: AuthService = Depends(get_auth_service)):
+    await service.logout(payload.refresh_token)
 
 
 @router.get("/me")

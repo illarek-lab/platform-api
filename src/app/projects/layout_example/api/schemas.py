@@ -27,6 +27,10 @@ class RefreshTokenRequest(BaseModel):
     device_id: Optional[str] = None
 
 
+class LogoutRequest(BaseModel):
+    refresh_token: str
+
+
 class RegisterResponse(BaseModel):
     user_id: str
 
