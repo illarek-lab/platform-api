@@ -237,7 +237,7 @@
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": "{{baseUrl}}/{{projectSlug}}/auth/login",
-                "description": "`POST /{projectSlug}/auth/login`\n\n**Body** (`LoginRequest`): `email`, `password`\n\n| Status | Respuesta |\n|--------|----------|\n| 200 | `{ \"access_token\": \"...\", \"token_type\": \"bearer\" }` |\n| 401 | `{ \"detail\": \"Invalid credentials\" }` |\n\nGuarda `accessToken` en Tests."
+                "description": "`POST /{projectSlug}/auth/login`\n\n**Body** (`LoginRequest`): `email`, `password`, `device_id`\n\n| Status | Respuesta |\n|--------|----------|\n| 200 | `{ \"access_token\": \"...\", \"refresh_token\": \"...\", \"token_type\": \"bearer\" }` |\n| 401 | `{ \"detail\": \"Invalid credentials\" }` |\n\nGuarda `accessToken` y `refreshToken` en Tests."
               },
               "response": [
                 {
@@ -252,7 +252,7 @@
                   "_postman_previewlanguage": "json",
                   "header": [{ "key": "Content-Type", "value": "application/json" }],
                   "cookie": [],
-                  "body": "{\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYxYTJiM2M0ZDVlNmY3YThiOWMwZDEiLCJlbWFpbCI6ImFkbWluQG1vYmlsZWFwaS5jb20iLCJleHAiOjk5OTk5OTk5OTl9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\",\n  \"token_type\": \"bearer\"\n}"
+                  "body": "{\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYxYTJiM2M0ZDVlNmY3YThiOWMwZDEiLCJlbWFpbCI6ImFkbWluQG1vYmlsZWFwaS5jb20iLCJleHAiOjk5OTk5OTk5OTl9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\",\n  \"refresh_token\": \"xyz789...\",\n  \"token_type\": \"bearer\"\n}"
                 },
                 {
                   "name": "401 — Credenciales inválidas",
@@ -299,7 +299,7 @@
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": "{{baseUrl}}/{{projectSlug}}/auth/google",
-                "description": "`POST /{projectSlug}/auth/google`\n\n**Body** (`GoogleLoginRequest`): `token` (Google ID token)\n\n| Status | Respuesta |\n|--------|----------|\n| 200 | `TokenResponse` |\n| 401 | `{ \"detail\": \"Invalid Google token\" }` |\n\nVariable: `googleIdToken`."
+                "description": "`POST /{projectSlug}/auth/google`\n\n**Body** (`GoogleLoginRequest`): `token` (Google ID token), `device_id`\n\n| Status | Respuesta |\n|--------|----------|\n| 200 | `TokenResponse` (`access_token`, `refresh_token`, `token_type`) |\n| 401 | `{ \"detail\": \"Invalid Google token\" }` |\n\nVariables: `googleIdToken`, `deviceId`. Guarda `accessToken` y `refreshToken` en Tests."
               },
               "response": [
                 {
@@ -307,14 +307,14 @@
                   "originalRequest": {
                     "method": "POST",
                     "header": [{ "key": "Content-Type", "value": "application/json" }],
-                    "body": { "mode": "raw", "raw": "{\n  \"token\": \"ya29.a0AfH6SMC...\"\n}", "options": { "raw": { "language": "json" } } },
+                    "body": { "mode": "raw", "raw": "{\n  \"token\": \"ya29.a0AfH6SMC...\",\n  \"device_id\": \"device-test-001\"\n}", "options": { "raw": { "language": "json" } } },
                     "url": "{{baseUrl}}/{{projectSlug}}/auth/google"
                   },
                   "status": "OK", "code": 200,
                   "_postman_previewlanguage": "json",
                   "header": [{ "key": "Content-Type", "value": "application/json" }],
                   "cookie": [],
-                  "body": "{\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDg5MDIzNDU2Nzg5MDEyMzQ1NiIsImVtYWlsIjoiYWRtaW5AbW9iaWxlYXBpLmNvbSIsImV4cCI6OTk5OTk5OTk5OX0.example\",\n  \"token_type\": \"bearer\"\n}"
+                  "body": "{\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDg5MDIzNDU2Nzg5MDEyMzQ1NiIsImVtYWlsIjoiYWRtaW5AbW9iaWxlYXBpLmNvbSIsImV4cCI6OTk5OTk5OTk5OX0.example\",\n  \"refresh_token\": \"abcDEF123...\",\n  \"token_type\": \"bearer\"\n}"
                 },
                 {
                   "name": "401 — Token de Google inválido",
