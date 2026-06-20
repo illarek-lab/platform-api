@@ -134,7 +134,7 @@ LLM_URL=http://localhost:11434
 ### 5. Start the server
 
 ```bash
-uv run uvicorn app.main:app --reload
+uv run uvicorn app.main:app --host 0.0.0.0 --reload
 ```
 
 | URL | Description |
@@ -142,7 +142,30 @@ uv run uvicorn app.main:app --reload
 | `http://localhost:8000/` | Landing page |
 | `http://localhost:8000/docs` | Swagger UI |
 | `http://localhost:8000/redoc` | ReDoc |
+| `http://localhost:8000/credentials/ui` | Subir Credentials |
 | `http://localhost:8000/layout_example/health` | Health check |
+
+### 6. Upload credentials (optional)
+
+You can upload `.env` files through the web UI or the API:
+
+**Web UI** — go to `http://localhost:8000/credentials/ui` and use the "Subir Credentials" button.
+
+**API:**
+
+```bash
+curl -X POST http://localhost:8000/credentials/upload -F "file=@my_project.env"
+```
+
+---
+
+## Production
+
+```bash
+uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+> In production, use `--workers N` or run behind a process manager (systemd, Docker, etc.). See [docs/deployment.md](docs/deployment.md) for the full setup.
 
 ---
 
@@ -254,6 +277,7 @@ The platform will **automatically mount** the project at `/my_project/*` on the 
 - [x] Cloudflare R2 / S3 presigned uploads
 - [x] GraphQL (Strawberry)
 - [x] Soft deletes
+- [x] Credentials upload (API + Web UI)
 - [ ] Alembic migrations
 - [ ] Redis caching
 - [ ] Rate limiting
