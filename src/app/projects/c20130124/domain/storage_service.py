@@ -74,3 +74,7 @@ class StorageService:
         await self._storage.delete(file.object_key)
         await self._repo.delete(file_id)
 
+
+
+
+
