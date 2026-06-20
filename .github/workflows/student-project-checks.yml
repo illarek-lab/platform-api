@@ -4,8 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'src/app/projects/**'
 
 jobs:
   check-student-project:
@@ -17,6 +15,34 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: 🔒 Check allowed paths
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          author="${{ github.event.pull_request.user.login }}"
+          permission=$(gh api "repos/${{ github.repository }}/collaborators/$author/permission" --jq '.permission')
+
+          echo "Author: $author (permission: $permission)"
+
+          if [ "$permission" = "admin" ]; then
+            echo "✅ Admin — sin restricciones de ruta."
+            exit 0
+          fi
+
+          outside=$(git diff --name-only origin/main...HEAD \
+            | grep -v '^src/app/projects/' || true)
+
+          if [ -n "$outside" ]; then
+            echo ""
+            echo "❌ Solo puedes modificar archivos dentro de src/app/projects/"
+            echo ""
+            echo "Archivos fuera del área permitida:"
+            echo "$outside" | sed 's/^/   - /'
+            exit 1
+          fi
+
+          echo "✅ Todos los cambios están en src/app/projects/"
 
       - name: 🔍 Detect changed projects
         id: detect
