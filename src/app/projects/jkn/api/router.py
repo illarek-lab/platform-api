@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 
-from app.projects.layout_example.api.auth import router as auth_router
-from app.projects.layout_example.api.geo_events import router as geo_events_router
-from app.projects.layout_example.api.geo_events_orm import router as geo_events_orm_router
-from app.projects.layout_example.api.graphql.router import router as graphql_router
-from app.projects.layout_example.api.storage import router as storage_router
-from app.projects.layout_example.infra.settings import PROJECT_NAME
+from app.projects.jkn.api.auth import router as auth_router
+from app.projects.jkn.api.geo_events import router as geo_events_router
+from app.projects.jkn.api.geo_events_orm import router as geo_events_orm_router
+from app.projects.jkn.api.graphql.router import router as graphql_router
+from app.projects.jkn.api.storage import router as storage_router
+from app.projects.jkn.infra.settings import PROJECT_NAME
 
 router = APIRouter()
 

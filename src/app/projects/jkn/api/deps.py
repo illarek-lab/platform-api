@@ -5,24 +5,28 @@ from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.projects.layout_example.domain.auth_service import AuthService
-from app.projects.layout_example.infra.clients.google import GoogleOAuthClient
-from app.projects.layout_example.infra.db.postgres import async_session
-from app.projects.layout_example.domain.storage_service import StorageService
-from app.projects.layout_example.infra.clients.storage import storage_client
-from app.projects.layout_example.infra.repositories.file_orm_repo import FileORMRepository
-from app.projects.layout_example.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
-from app.projects.layout_example.infra.repositories.geo_event_repo import GeoEventRepository
-from app.projects.layout_example.infra.repositories.refresh_token_repo import RefreshTokenRepository
-from app.projects.layout_example.infra.repositories.user_repo import UserRepository
-from app.projects.layout_example.infra.settings import settings
+from app.projects.jkn.domain.auth_service import AuthService
+from app.projects.jkn.infra.clients.google import GoogleOAuthClient
+from app.projects.jkn.infra.db.postgres import async_session
+from app.projects.jkn.domain.storage_service import StorageService
+from app.projects.jkn.infra.clients.storage import storage_client
+from app.projects.jkn.infra.repositories.file_orm_repo import FileORMRepository
+from app.projects.jkn.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
+from app.projects.jkn.infra.repositories.geo_event_repo import GeoEventRepository
+from app.projects.jkn.infra.repositories.refresh_token_repo import (
+    RefreshTokenRepository,
+)
+from app.projects.jkn.infra.repositories.user_repo import UserRepository
+from app.projects.jkn.infra.settings import settings
 
 security = HTTPBearer()
 
 _user_repo = UserRepository()
 _google_client = GoogleOAuthClient()
 _refresh_token_repo = RefreshTokenRepository()
-_auth_service = AuthService(_user_repo, _google_client, _refresh_token_repo, settings.REFRESH_TOKEN_EXPIRE_DAYS)
+_auth_service = AuthService(
+    _user_repo, _google_client, _refresh_token_repo, settings.REFRESH_TOKEN_EXPIRE_DAYS
+)
 
 
 def get_auth_service() -> AuthService:
@@ -34,15 +38,21 @@ async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
-def get_geo_event_repo(session: AsyncSession = Depends(get_db_session)) -> GeoEventRepository:
+def get_geo_event_repo(
+    session: AsyncSession = Depends(get_db_session),
+) -> GeoEventRepository:
     return GeoEventRepository(session)
 
 
-def get_geo_event_orm_repo(session: AsyncSession = Depends(get_db_session)) -> GeoEventORMRepository:
+def get_geo_event_orm_repo(
+    session: AsyncSession = Depends(get_db_session),
+) -> GeoEventORMRepository:
     return GeoEventORMRepository(session)
 
 
-def get_storage_service(session: AsyncSession = Depends(get_db_session)) -> StorageService:
+def get_storage_service(
+    session: AsyncSession = Depends(get_db_session),
+) -> StorageService:
     return StorageService(FileORMRepository(session), storage_client)
 
 

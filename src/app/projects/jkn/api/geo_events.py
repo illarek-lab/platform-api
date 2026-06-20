@@ -2,15 +2,17 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.projects.layout_example.api.deps import get_geo_event_repo
-from app.projects.layout_example.api.schemas import GeoEventCreate, GeoEventResponse
-from app.projects.layout_example.infra.repositories.geo_event_repo import GeoEventRepository
+from app.projects.jkn.api.deps import get_geo_event_repo
+from app.projects.jkn.api.schemas import GeoEventCreate, GeoEventResponse
+from app.projects.jkn.infra.repositories.geo_event_repo import GeoEventRepository
 
 router = APIRouter(prefix="/geo-events", tags=["geo-events"])
 
 
 @router.post("/", response_model=GeoEventResponse, status_code=201)
-async def create(payload: GeoEventCreate, repo: GeoEventRepository = Depends(get_geo_event_repo)):
+async def create(
+    payload: GeoEventCreate, repo: GeoEventRepository = Depends(get_geo_event_repo)
+):
     return await repo.create(payload.model_dump())
 
 
@@ -30,7 +32,9 @@ async def get_all(
     offset: int = 0,
     repo: GeoEventRepository = Depends(get_geo_event_repo),
 ):
-    return await repo.find_all(user_id=user_id, event_type=event_type, limit=limit, offset=offset)
+    return await repo.find_all(
+        user_id=user_id, event_type=event_type, limit=limit, offset=offset
+    )
 
 
 @router.delete("/{id}", status_code=204)

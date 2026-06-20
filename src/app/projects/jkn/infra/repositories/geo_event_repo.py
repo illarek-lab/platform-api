@@ -3,7 +3,7 @@ from typing import Optional
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.projects.layout_example.domain.models.geo_event import GeoEvent
+from app.projects.jkn.domain.models.geo_event import GeoEvent
 
 
 class GeoEventRepository:
@@ -57,7 +57,9 @@ class GeoEventRepository:
         where = f"WHERE {' AND '.join(filters)}" if filters else ""
 
         result = await self._session.execute(
-            text(f"SELECT * FROM geo_events {where} ORDER BY recorded_at DESC LIMIT :limit OFFSET :offset"),
+            text(
+                f"SELECT * FROM geo_events {where} ORDER BY recorded_at DESC LIMIT :limit OFFSET :offset"
+            ),
             params,
         )
         return [GeoEvent.model_validate(dict(row)) for row in result.mappings()]

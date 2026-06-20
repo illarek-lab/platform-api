@@ -3,8 +3,8 @@ from typing import Optional
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.projects.layout_example.domain.models.geo_event import GeoEvent
-from app.projects.layout_example.infra.orm.geo_event import GeoEventORM
+from app.projects.jkn.domain.models.geo_event import GeoEvent
+from app.projects.jkn.infra.orm.geo_event import GeoEventORM
 
 
 class GeoEventORMRepository:
@@ -30,7 +30,12 @@ class GeoEventORMRepository:
         limit: int = 50,
         offset: int = 0,
     ) -> list[GeoEvent]:
-        stmt = select(GeoEventORM).order_by(GeoEventORM.recorded_at.desc()).limit(limit).offset(offset)
+        stmt = (
+            select(GeoEventORM)
+            .order_by(GeoEventORM.recorded_at.desc())
+            .limit(limit)
+            .offset(offset)
+        )
 
         if user_id:
             stmt = stmt.where(GeoEventORM.user_id == user_id)

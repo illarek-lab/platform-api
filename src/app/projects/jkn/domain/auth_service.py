@@ -1,14 +1,22 @@
 import datetime
 from typing import Optional
 
-from app.projects.layout_example.domain.exceptions import (
+from app.projects.jkn.domain.exceptions import (
     InvalidCredentialsError,
     InvalidGoogleTokenError,
     InvalidRefreshTokenError,
     UserAlreadyExistsError,
 )
-from app.projects.layout_example.domain.ports import IGoogleOAuthClient, IRefreshTokenRepository, IUserRepository
-from app.projects.layout_example.domain.security import generate_refresh_token_value, hash_password, verify_password
+from app.projects.jkn.domain.ports import (
+    IGoogleOAuthClient,
+    IRefreshTokenRepository,
+    IUserRepository,
+)
+from app.projects.jkn.domain.security import (
+    generate_refresh_token_value,
+    hash_password,
+    verify_password,
+)
 
 
 class AuthService:
@@ -72,12 +80,20 @@ class AuthService:
     async def logout(self, refresh_token: str) -> None:
         await self._refresh_token_repo.delete(refresh_token)
 
-    async def create_refresh_token(self, user_id: str, email: str, device_id: Optional[str] = None) -> str:
-        token, expires_at = generate_refresh_token_value(self._refresh_token_expire_days)
-        await self._refresh_token_repo.create(token, user_id, email, expires_at, device_id)
+    async def create_refresh_token(
+        self, user_id: str, email: str, device_id: Optional[str] = None
+    ) -> str:
+        token, expires_at = generate_refresh_token_value(
+            self._refresh_token_expire_days
+        )
+        await self._refresh_token_repo.create(
+            token, user_id, email, expires_at, device_id
+        )
         return token
 
-    async def rotate_refresh_token(self, old_token: str, device_id: Optional[str] = None) -> tuple[str, str, str]:
+    async def rotate_refresh_token(
+        self, old_token: str, device_id: Optional[str] = None
+    ) -> tuple[str, str, str]:
         doc = await self._refresh_token_repo.find(old_token)
 
         if not doc:
@@ -97,7 +113,11 @@ class AuthService:
 
         await self._refresh_token_repo.delete(old_token)
 
-        new_token, new_expires_at = generate_refresh_token_value(self._refresh_token_expire_days)
-        await self._refresh_token_repo.create(new_token, doc["user_id"], doc["email"], new_expires_at, device_id)
+        new_token, new_expires_at = generate_refresh_token_value(
+            self._refresh_token_expire_days
+        )
+        await self._refresh_token_repo.create(
+            new_token, doc["user_id"], doc["email"], new_expires_at, device_id
+        )
 
         return doc["user_id"], doc["email"], new_token
