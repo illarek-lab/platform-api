@@ -3,8 +3,8 @@ from typing import Optional
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.projects.layout_example.domain.models.geo_event import GeoEvent
-from app.projects.layout_example.infra.orm.geo_event import GeoEventORM
+from app.projects.sistema_olvea.domain.models.geo_event import GeoEvent
+from app.projects.sistema_olvea.infra.orm.geo_event import GeoEventORM
 
 
 class GeoEventORMRepository:

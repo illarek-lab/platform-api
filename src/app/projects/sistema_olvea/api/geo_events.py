@@ -2,9 +2,9 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.projects.layout_example.api.deps import get_geo_event_repo
-from app.projects.layout_example.api.schemas import GeoEventCreate, GeoEventResponse
-from app.projects.layout_example.infra.repositories.geo_event_repo import GeoEventRepository
+from app.projects.sistema_olvea.api.deps import get_geo_event_repo
+from app.projects.sistema_olvea.api.schemas import GeoEventCreate, GeoEventResponse
+from app.projects.sistema_olvea.infra.repositories.geo_event_repo import GeoEventRepository
 
 router = APIRouter(prefix="/geo-events", tags=["geo-events"])
 

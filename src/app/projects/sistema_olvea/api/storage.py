@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.projects.layout_example.api.deps import get_current_user, get_storage_service
-from app.projects.layout_example.api.schemas import (
+from app.projects.sistema_olvea.api.deps import get_current_user, get_storage_service
+from app.projects.sistema_olvea.api.schemas import (
     ConfirmUploadRequest,
     FileResponse,
     UploadUrlRequest,
     UploadUrlResponse,
 )
-from app.projects.layout_example.domain.exceptions import StorageAccessError, StorageFileNotFoundError
-from app.projects.layout_example.domain.storage_service import StorageService
-from app.projects.layout_example.infra.settings import PROJECT_NAME
+from app.projects.sistema_olvea.domain.exceptions import StorageAccessError, StorageFileNotFoundError
+from app.projects.sistema_olvea.domain.storage_service import StorageService
+from app.projects.sistema_olvea.infra.settings import PROJECT_NAME
 
 router = APIRouter(prefix="/storage", tags=["storage"])
 

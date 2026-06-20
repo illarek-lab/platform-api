@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.projects.layout_example.api.deps import get_auth_service, get_current_user
-from app.projects.layout_example.api.schemas import (
+from app.projects.sistema_olvea.api.deps import get_auth_service, get_current_user
+from app.projects.sistema_olvea.api.schemas import (
     GoogleLoginRequest,
     LoginRequest,
     LogoutRequest,
@@ -9,14 +9,14 @@ from app.projects.layout_example.api.schemas import (
     RegisterResponse,
     TokenResponse,
 )
-from app.projects.layout_example.domain.auth_service import AuthService
-from app.projects.layout_example.domain.exceptions import (
+from app.projects.sistema_olvea.domain.auth_service import AuthService
+from app.projects.sistema_olvea.domain.exceptions import (
     InvalidCredentialsError,
     InvalidGoogleTokenError,
     InvalidRefreshTokenError,
     UserAlreadyExistsError,
 )
-from app.projects.layout_example.infra.token import create_token
+from app.projects.sistema_olvea.infra.token import create_token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

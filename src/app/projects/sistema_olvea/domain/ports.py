@@ -1,8 +1,8 @@
 import datetime
 from typing import Any, Optional, Protocol
 
-from app.projects.layout_example.domain.models.file import File
-from app.projects.layout_example.domain.models.geo_event import GeoEvent
+from app.projects.sistema_olvea.domain.models.file import File
+from app.projects.sistema_olvea.domain.models.geo_event import GeoEvent
 
 
 class IRefreshTokenRepository(Protocol):

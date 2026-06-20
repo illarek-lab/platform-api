@@ -1,14 +1,14 @@
 import datetime
 from typing import Optional
 
-from app.projects.layout_example.domain.exceptions import (
+from app.projects.sistema_olvea.domain.exceptions import (
     InvalidCredentialsError,
     InvalidGoogleTokenError,
     InvalidRefreshTokenError,
     UserAlreadyExistsError,
 )
-from app.projects.layout_example.domain.ports import IGoogleOAuthClient, IRefreshTokenRepository, IUserRepository
-from app.projects.layout_example.domain.security import generate_refresh_token_value, hash_password, verify_password
+from app.projects.sistema_olvea.domain.ports import IGoogleOAuthClient, IRefreshTokenRepository, IUserRepository
+from app.projects.sistema_olvea.domain.security import generate_refresh_token_value, hash_password, verify_password
 
 
 class AuthService:

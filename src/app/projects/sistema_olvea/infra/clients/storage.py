@@ -1,6 +1,6 @@
 import aioboto3
 
-from app.projects.layout_example.infra.settings import settings
+from app.projects.sistema_olvea.infra.settings import settings
 
 
 class StorageClient:

@@ -2,7 +2,7 @@ import datetime
 
 import jwt
 
-from app.projects.layout_example.infra.settings import settings
+from app.projects.sistema_olvea.infra.settings import settings
 
 
 def create_token(user_id: str, email: str) -> str:
