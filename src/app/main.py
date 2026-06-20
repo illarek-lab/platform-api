@@ -1,29 +1,21 @@
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, Request, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.core.discovery import load_projects, registry
 
 app = FastAPI(title="Platform API", version="1.0.0")
 
 CREDENTIALS_DIR = Path(__file__).resolve().parents[2] / "credentials"
+CREDENTIALS_DIR.mkdir(exist_ok=True)
+TEMPLATE_FILE = CREDENTIALS_DIR / "layout_example.env"
 
 print("STARTING APP")
 load_projects(app)
-
-
-TEMPLATE_FILE = CREDENTIALS_DIR / "jkn.env"
-
-
-def _safe_filename(name: str) -> str | None:
-    if not name or ".." in name or "/" in name or "\\" in name:
-        return None
-    safe = re.sub(r"[^a-zA-Z0-9_\-.]", "_", name)
-    if safe != name or not safe.endswith(".env"):
-        return None
-    return safe
 
 
 def _parse_env(text: str) -> dict[str, str]:
@@ -38,24 +30,43 @@ def _parse_env(text: str) -> dict[str, str]:
     return entries
 
 
-def _get_template_keys() -> set[str]:
-    return set(_parse_env(TEMPLATE_FILE.read_text()).keys())
+_template_env = _parse_env(TEMPLATE_FILE.read_text()) if TEMPLATE_FILE.exists() else {}
+_mongo_client = AsyncIOMotorClient(_template_env.get("MONGO_URI", ""))
+_mongo_db = _mongo_client[_template_env.get("MONGO_DATABASE", "test")]
+_students_col = _mongo_db["mobile_student_endpoint"]
+
+
+def _safe_filename(name: str) -> str | None:
+    if not name or ".." in name or "/" in name or "\\" in name:
+        return None
+    safe = re.sub(r"[^a-zA-Z0-9_\-.]", "_", name)
+    if safe != name or not safe.endswith(".env"):
+        return None
+    return safe
 
 
 @app.post("/credentials/upload", tags=["credentials"])
 async def upload_credential(file: UploadFile):
     safe = _safe_filename(file.filename or "")
     if not safe:
-        return JSONResponse(status_code=400, content={"detail": "Nombre inválido. Debe ser un archivo .env con solo letras, números, guiones y guiones bajos."})
+        return JSONResponse(
+            status_code=400,
+            content={
+                "detail": "Nombre inválido. Debe ser un archivo .env con solo letras, números, guiones y guiones bajos."
+            },
+        )
 
     content = await file.read()
     try:
         text = content.decode()
     except UnicodeDecodeError:
-        return JSONResponse(status_code=400, content={"detail": "El archivo no es un archivo de texto válido."})
+        return JSONResponse(
+            status_code=400,
+            content={"detail": "El archivo no es un archivo de texto válido."},
+        )
 
     uploaded = _parse_env(text)
-    required_keys = _get_template_keys()
+    required_keys = set(_template_env.keys())
 
     missing = sorted(required_keys - uploaded.keys())
     empty = sorted(k for k in required_keys & uploaded.keys() if not uploaded[k])
@@ -71,22 +82,50 @@ async def upload_credential(file: UploadFile):
         return JSONResponse(status_code=400, content=errors)
 
     (CREDENTIALS_DIR / safe).write_bytes(content)
+
+    project_name = safe.removesuffix(".env")
+    await _students_col.update_one(
+        {"project_name": project_name},
+        {
+            "$set": {
+                "project_name": project_name,
+                "filename": safe,
+                "uploaded_at": datetime.now(timezone.utc),
+            }
+        },
+        upsert=True,
+    )
+
     return {"message": f"Archivo '{safe}' subido correctamente", "filename": safe}
 
+
+@app.get("/credentials/students", tags=["credentials"])
+async def list_students():
+    cursor = _students_col.find({}, {"_id": 0}).sort("project_name", 1)
+    students = await cursor.to_list(length=None)
+    for s in students:
+        if "uploaded_at" in s:
+            s["uploaded_at"] = s["uploaded_at"].isoformat()
+    return {"students": students}
 
 
 @app.get("/credentials/ui", response_class=HTMLResponse, include_in_schema=False)
 async def credentials_ui():
-    files = sorted(f.name for f in CREDENTIALS_DIR.glob("*.env"))
+    cursor = _students_col.find({}, {"_id": 0}).sort("project_name", 1)
+    students = await cursor.to_list(length=None)
     file_rows = ""
-    for f in files:
+    for s in students:
+        dt = s.get("uploaded_at")
+        date_str = dt.strftime("%Y-%m-%d %H:%M") if dt else "—"
+        name = s["filename"]
         file_rows += f"""
         <tr>
-          <td class="file-name"><span class="file-icon">&#128196;</span> {f}</td>
+          <td class="file-name"><span class="file-icon">&#128196;</span> {name}</td>
+          <td class="file-date">{date_str}</td>
         </tr>"""
 
-    if not files:
-        file_rows = '<tr><td colspan="2" class="empty">No hay archivos de credenciales</td></tr>'
+    if not students:
+        file_rows = '<tr><td colspan="2" class="empty">No hay credenciales registradas</td></tr>'
 
     return f"""<!DOCTYPE html>
 <html lang="es">
@@ -129,6 +168,7 @@ async def credentials_ui():
   td {{ padding: 12px 22px; font-size: 0.84rem; }}
   .file-name {{ display: flex; align-items: center; gap: 8px; color: #334155; font-family: "SF Mono", "Fira Code", monospace; }}
   .file-icon {{ font-size: 1rem; }}
+  .file-date {{ text-align: right; color: #94a3b8; font-size: 0.78rem; white-space: nowrap; }}
   .empty {{ text-align: center; color: #94a3b8; padding: 24px; }}
 
   .error-panel {{ background: #fef2f2; border: 1px solid #fecaca; border-radius: 14px; padding: 0; margin-bottom: 24px; overflow: hidden; }}
@@ -198,7 +238,7 @@ async def credentials_ui():
   </div>
 
   <div class="files-card">
-    <div class="files-header">Archivos en credentials/</div>
+    <div class="files-header">Credenciales registradas</div>
     <table id="filesTable">
       {file_rows}
     </table>
@@ -264,7 +304,12 @@ async function uploadFile(file) {{
   document.getElementById('errorPanel').style.display = 'none';
   try {{
     const res = await fetch('/credentials/upload', {{ method: 'POST', body: form }});
-    const data = await res.json();
+    const text = await res.text();
+    let data;
+    try {{ data = JSON.parse(text); }} catch(_) {{
+      showToast('Error del servidor: ' + res.status + ' — ' + text.substring(0, 100), true);
+      return;
+    }}
     if (res.ok) {{
       showToast(data.message, false);
       setTimeout(() => location.reload(), 800);
@@ -274,7 +319,7 @@ async function uploadFile(file) {{
       showToast(data.detail || 'Error al subir', true);
     }}
   }} catch(err) {{
-    showToast('Error de conexión', true);
+    showToast('Error de conexión: ' + err.message, true);
   }}
 }}
 
@@ -426,7 +471,9 @@ async def landing():
 
 @app.api_route("/{path:path}", methods=["GET"], include_in_schema=False)
 async def catch_all(request: Request):
-    return HTMLResponse(status_code=404, content=f"""<!DOCTYPE html>
+    return HTMLResponse(
+        status_code=404,
+        content=f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -465,4 +512,5 @@ async def catch_all(request: Request):
   </div>
 </div>
 </body>
-</html>""")
+</html>""",
+    )
