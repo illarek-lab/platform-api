@@ -132,7 +132,7 @@ async def credentials_ui():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Subir Credentials — Illarek Lab (endpoints)</title>
+<title>Subir Credentials — Illarek Lab</title>
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; color: #1a202c; min-height: 100vh; }}
