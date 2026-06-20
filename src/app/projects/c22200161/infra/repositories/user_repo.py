@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from app.projects.layout_example.infra.db.mongo import database
+from app.projects.c22200161.infra.db.mongo import database
 
 
 class UserRepository:
