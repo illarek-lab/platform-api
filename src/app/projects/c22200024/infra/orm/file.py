@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import BigInteger, Boolean, DateTime, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.projects.jkn.infra.orm.base import Base
+from app.projects.c22200024.infra.orm.base import Base
 
 
 class FileORM(Base):
@@ -25,9 +25,5 @@ class FileORM(Base):
 
     is_public: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    uploaded_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
-    deleted_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    uploaded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

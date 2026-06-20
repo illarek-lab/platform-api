@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from app.projects.jkn.infra.db.mongo import database
+from app.projects.c22200024.infra.db.mongo import database
 
 
 class UserRepository:

@@ -1,18 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.projects.jkn.api.deps import get_current_user, get_storage_service
-from app.projects.jkn.api.schemas import (
+from app.projects.c22200024.api.deps import get_current_user, get_storage_service
+from app.projects.c22200024.api.schemas import (
     ConfirmUploadRequest,
     FileResponse,
     UploadUrlRequest,
     UploadUrlResponse,
 )
-from app.projects.jkn.domain.exceptions import (
-    StorageAccessError,
-    StorageFileNotFoundError,
-)
-from app.projects.jkn.domain.storage_service import StorageService
-from app.projects.jkn.infra.settings import PROJECT_NAME
+from app.projects.c22200024.domain.exceptions import StorageAccessError, StorageFileNotFoundError
+from app.projects.c22200024.domain.storage_service import StorageService
+from app.projects.c22200024.infra.settings import PROJECT_NAME
 
 router = APIRouter(prefix="/storage", tags=["storage"])
 
@@ -50,9 +47,7 @@ async def confirm_upload(
             is_public=payload.is_public,
         )
     except StorageAccessError:
-        raise HTTPException(
-            status_code=403, detail="Invalid object_key for this user"
-        ) from None
+        raise HTTPException(status_code=403, detail="Invalid object_key for this user") from None
     return FileResponse.model_validate(file.model_dump())
 
 

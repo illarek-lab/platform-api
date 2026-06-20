@@ -1,6 +1,6 @@
 import httpx
 
-from app.projects.jkn.infra.settings import settings
+from app.projects.c22200024.infra.settings import settings
 
 
 class LLMClient:

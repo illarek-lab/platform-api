@@ -1,6 +1,6 @@
 import aioboto3
 
-from app.projects.jkn.infra.settings import settings
+from app.projects.c22200024.infra.settings import settings
 
 
 class StorageClient:
@@ -15,13 +15,9 @@ class StorageClient:
             "region_name": settings.OBJECT_STORAGE_REGION,
         }
 
-    async def upload(
-        self, key: str, data: bytes, content_type: str = "application/octet-stream"
-    ) -> str:
+    async def upload(self, key: str, data: bytes, content_type: str = "application/octet-stream") -> str:
         async with self._session.client("s3", **self._client_kwargs) as s3:
-            await s3.put_object(
-                Bucket=self._bucket, Key=key, Body=data, ContentType=content_type
-            )
+            await s3.put_object(Bucket=self._bucket, Key=key, Body=data, ContentType=content_type)
         return key
 
     async def download(self, key: str) -> bytes:
@@ -33,17 +29,11 @@ class StorageClient:
         async with self._session.client("s3", **self._client_kwargs) as s3:
             await s3.delete_object(Bucket=self._bucket, Key=key)
 
-    async def get_upload_url(
-        self, key: str, content_type: str, expires_in: int = 3600
-    ) -> str:
+    async def get_upload_url(self, key: str, content_type: str, expires_in: int = 3600) -> str:
         async with self._session.client("s3", **self._client_kwargs) as s3:
             return await s3.generate_presigned_url(
                 "put_object",
-                Params={
-                    "Bucket": self._bucket,
-                    "Key": key,
-                    "ContentType": content_type,
-                },
+                Params={"Bucket": self._bucket, "Key": key, "ContentType": content_type},
                 ExpiresIn=expires_in,
             )
 
