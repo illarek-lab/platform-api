@@ -89,6 +89,115 @@
               "body": "<!-- ReDoc HTML -->"
             }
           ]
+        },
+        {
+          "name": "Credentials",
+          "description": "Endpoints para gestionar archivos `.env` de credenciales de alumnos. Los archivos se guardan en `credentials/` y se registran en MongoDB (`mobile_student_endpoint`).",
+          "item": [
+            {
+              "name": "Upload credential",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const json = pm.response.json();",
+                      "    pm.test('upload ok', () => pm.expect(json.filename).to.be.a('string'));",
+                      "}",
+                      "if (pm.response.code === 400) {",
+                      "    const json = pm.response.json();",
+                      "    pm.test('validation error', () => pm.expect(json.detail).to.be.a('string'));",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": { "type": "noauth" },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "",
+                      "description": "Archivo .env a subir (ej: mi_proyecto.env)"
+                    }
+                  ]
+                },
+                "url": "{{baseUrl}}/credentials/upload",
+                "description": "`POST /credentials/upload`\n\nSube un archivo `.env` al directorio `credentials/`. Valida que contenga todos los campos requeridos de la plantilla y que ninguno esté vacío.\n\nSi el archivo ya existe, lo reemplaza. El registro en MongoDB (`mobile_student_endpoint`) se actualiza con upsert.\n\n| Status | Respuesta |\n|--------|----------|\n| 200 | `{ \"message\": \"Archivo subido correctamente\", \"filename\": \"mi_proyecto.env\" }` |\n| 400 | `{ \"detail\": \"N campo(s) con problemas\", \"missing_keys\": [...], \"empty_keys\": [...] }` |"
+              },
+              "response": [
+                {
+                  "name": "200 OK — Archivo subido",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": { "mode": "formdata", "formdata": [{ "key": "file", "type": "file", "src": "" }] },
+                    "url": "{{baseUrl}}/credentials/upload"
+                  },
+                  "status": "OK", "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [{ "key": "Content-Type", "value": "application/json" }],
+                  "cookie": [],
+                  "body": "{\n  \"message\": \"Archivo 'mi_proyecto.env' subido correctamente\",\n  \"filename\": \"mi_proyecto.env\"\n}"
+                },
+                {
+                  "name": "400 — Campos faltantes o vacíos",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": { "mode": "formdata", "formdata": [{ "key": "file", "type": "file", "src": "" }] },
+                    "url": "{{baseUrl}}/credentials/upload"
+                  },
+                  "status": "Bad Request", "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [{ "key": "Content-Type", "value": "application/json" }],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": \"2 campo(s) con problemas\",\n  \"missing_keys\": [\"POSTGRES_HOST\"],\n  \"empty_keys\": [\"APP_NAME\"]\n}"
+                }
+              ]
+            },
+            {
+              "name": "List students",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                      "const json = pm.response.json();",
+                      "pm.test('students is array', () => pm.expect(json.students).to.be.an('array'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": { "type": "noauth" },
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/credentials/students",
+                "description": "`GET /credentials/students`\n\nLista todos los registros de la collection `mobile_student_endpoint` en MongoDB. Cada registro contiene el nombre del proyecto, el archivo subido y la fecha de carga.\n\n| Status | Respuesta |\n|--------|----------|\n| 200 | `{ \"students\": [{ \"project_name\": \"...\", \"filename\": \"...\", \"uploaded_at\": \"...\" }] }` |"
+              },
+              "response": [
+                {
+                  "name": "200 OK — Lista de estudiantes",
+                  "originalRequest": { "method": "GET", "header": [], "url": "{{baseUrl}}/credentials/students" },
+                  "status": "OK", "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [{ "key": "Content-Type", "value": "application/json" }],
+                  "cookie": [],
+                  "body": "{\n  \"students\": [\n    {\n      \"project_name\": \"c21200014\",\n      \"filename\": \"c21200014.env\",\n      \"uploaded_at\": \"2026-06-20T01:47:10.305000\"\n    },\n    {\n      \"project_name\": \"layout_example\",\n      \"filename\": \"layout_example.env\",\n      \"uploaded_at\": \"2026-06-19T22:30:00.000000\"\n    }\n  ]\n}"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
