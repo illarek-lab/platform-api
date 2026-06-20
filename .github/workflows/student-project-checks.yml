@@ -1,0 +1,114 @@
+name: 🎓 Student Project Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-student-project:
+    name: Student Project Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔒 Check allowed paths
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          author="${{ github.event.pull_request.user.login }}"
+          permission=$(gh api "repos/${{ github.repository }}/collaborators/$author/permission" --jq '.permission')
+
+          echo "Author: $author (permission: $permission)"
+
+          if [ "$permission" = "admin" ]; then
+            echo "✅ Admin — sin restricciones de ruta."
+            exit 0
+          fi
+
+          outside=$(git diff --name-only origin/main...HEAD \
+            | grep -v '^src/app/projects/' || true)
+
+          if [ -n "$outside" ]; then
+            echo ""
+            echo "❌ Solo puedes modificar archivos dentro de src/app/projects/"
+            echo ""
+            echo "Archivos fuera del área permitida:"
+            echo "$outside" | sed 's/^/   - /'
+            exit 1
+          fi
+
+          echo "✅ Todos los cambios están en src/app/projects/"
+
+      - name: 🔍 Detect changed projects
+        id: detect
+        run: |
+          projects=$(git diff --name-only origin/main...HEAD \
+            | grep '^src/app/projects/' \
+            | cut -d'/' -f4 \
+            | sort -u \
+            | grep -v '^$' || true)
+
+          if [ -z "$projects" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "projects=$projects" >> "$GITHUB_OUTPUT"
+            echo "Projects detected:"
+            echo "$projects"
+          fi
+
+      - name: 🔑 Check credentials via API
+        if: steps.detect.outputs.skip == 'false'
+        run: |
+          response=$(curl -s https://platform-api.kankunapaq.com/credentials/students)
+          registered=$(echo "$response" | jq -r '.students[].project_name')
+
+          missing=""
+          for project in ${{ steps.detect.outputs.projects }}; do
+            if ! echo "$registered" | grep -qx "$project"; then
+              missing="$missing $project"
+            fi
+          done
+
+          if [ -n "$missing" ]; then
+            echo ""
+            echo "❌ No se puede aprobar. Faltan credenciales para:"
+            for p in $missing; do
+              echo "   - ${p}.env"
+            done
+            echo ""
+            echo "Sube tu archivo .env en: https://platform-api.kankunapaq.com/credentials/ui"
+            exit 1
+          fi
+
+          echo "✅ Credenciales verificadas."
+
+      - name: 🚫 Check for layout_example references
+        if: steps.detect.outputs.skip == 'false'
+        run: |
+          failed=""
+          for project in ${{ steps.detect.outputs.projects }}; do
+            if [ "$project" = "layout_example" ]; then
+              continue
+            fi
+
+            matches=$(grep -rl "layout_example" "src/app/projects/$project" 2>/dev/null || true)
+            if [ -n "$matches" ]; then
+              failed="$failed $project"
+              echo "❌ $project contiene referencias a 'layout_example' en:"
+              echo "$matches" | sed 's/^/   - /'
+              echo ""
+            fi
+          done
+
+          if [ -n "$failed" ]; then
+            echo "Reemplaza todas las referencias de 'layout_example' por el nombre de tu proyecto."
+            exit 1
+          fi
+
+          echo "✅ Sin referencias a layout_example."

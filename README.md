@@ -134,7 +134,7 @@ LLM_URL=http://localhost:11434
 ### 5. Start the server
 
 ```bash
-uv run uvicorn app.main:app --reload
+uv run uvicorn app.main:app --host 0.0.0.0 --reload
 ```
 
 | URL | Description |
@@ -142,7 +142,30 @@ uv run uvicorn app.main:app --reload
 | `http://localhost:8000/` | Landing page |
 | `http://localhost:8000/docs` | Swagger UI |
 | `http://localhost:8000/redoc` | ReDoc |
+| `http://localhost:8000/credentials/ui` | Subir Credentials |
 | `http://localhost:8000/layout_example/health` | Health check |
+
+### 6. Upload credentials (optional)
+
+You can upload `.env` files through the web UI or the API:
+
+**Web UI** — go to `http://localhost:8000/credentials/ui` and use the "Subir Credentials" button.
+
+**API:**
+
+```bash
+curl -X POST http://localhost:8000/credentials/upload -F "file=@my_project.env"
+```
+
+---
+
+## Production
+
+```bash
+uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+> In production, use `--workers N` or run behind a process manager (systemd, Docker, etc.). See [docs/deployment.md](docs/deployment.md) for the full setup.
 
 ---
 
@@ -204,33 +227,73 @@ The PR requires approval from `@johnkbarrera` before it can be merged. You will 
 
 ---
 
-## Adding a New Project
+## Student Guide — Adding Your Project
 
-Use `layout_example` as your starting point — it contains a complete working implementation with auth, PostgreSQL (raw SQL + ORM), MongoDB, Redis, Cloudflare R2 storage, and GraphQL.
+This is the complete workflow for students to add their project to the platform, from uploading credentials to merging their PR.
 
-**1. Copy the reference project**
+### Step 1 — Upload your credentials
+
+Before writing any code, upload your `.env` file to the server:
+
+1. Go to **https://platform-api.kankunapaq.com/credentials/ui**
+2. Click **"Subir Credentials"** and select your file (must be named `<your_project>.env`)
+3. The system validates that all required fields are present and have values
+4. If validation fails, it shows exactly which fields are missing or empty — fix them and re-upload
+
+You can also upload via API:
 
 ```bash
-cp -r src/app/projects/layout_example src/app/projects/my_project
+curl -X POST https://platform-api.kankunapaq.com/credentials/upload -F "file=@c21200014.env"
 ```
 
-**2. Rename references** inside the new folder — replace every occurrence of `layout_example` with your project slug.
+### Step 2 — Create your project
 
-**3. Export a `router` object** from `api/router.py` — this is what the discovery system looks for:
+Copy the reference project and replace all references:
 
-```python
-from fastapi import APIRouter
-
-router = APIRouter()
-
-@router.get("/health")
-async def health():
-    return {"project": "my_project", "status": "ok"}
+```bash
+cp -r src/app/projects/layout_example src/app/projects/c21200014
 ```
 
-**4. Add credentials** at `credentials/my_project.env`.
+Then rename **every occurrence** of `layout_example` inside your folder with your project name:
 
-The platform will **automatically mount** the project at `/my_project/*` on the next startup — no changes to `main.py` required.
+```bash
+# From the repo root
+grep -rl "layout_example" src/app/projects/c21200014/ | xargs sed -i '' 's/layout_example/c21200014/g'
+```
+
+Verify no references remain:
+
+```bash
+grep -r "layout_example" src/app/projects/c21200014/
+# Should return nothing
+```
+
+### Step 3 — Push and create your PR
+
+```bash
+git checkout -b feat/c21200014-initial-setup
+git add src/app/projects/c21200014/
+git commit -m "feat: add project c21200014"
+git push origin feat/c21200014-initial-setup
+gh pr create --title "feat: add project c21200014" --base main
+```
+
+### Step 4 — Pass the automated checks
+
+Your PR must pass **Student Project Checks** before it can be merged. The workflow verifies three rules:
+
+| Check | What it verifies | What to do if it fails |
+|-------|-----------------|----------------------|
+| **Allowed paths** | You only modified files inside `src/app/projects/` | Remove changes to files outside that directory |
+| **Credentials** | Your `.env` is registered on the server | Upload it at `/credentials/ui` |
+| **No layout_example** | Your code doesn't reference `layout_example` | Replace all occurrences with your project name |
+
+### Step 5 — Wait for approval
+
+Once all checks pass, `@johnkbarrera` reviews and approves the PR. You cannot merge without both:
+
+- All automated checks in green
+- Manual approval from an admin
 
 ---
 
@@ -254,6 +317,8 @@ The platform will **automatically mount** the project at `/my_project/*` on the 
 - [x] Cloudflare R2 / S3 presigned uploads
 - [x] GraphQL (Strawberry)
 - [x] Soft deletes
+- [x] Credentials upload (API + Web UI)
+- [x] Student project CI checks (credentials, path restrictions, naming)
 - [ ] Alembic migrations
 - [ ] Redis caching
 - [ ] Rate limiting
