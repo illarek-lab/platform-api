@@ -221,3 +221,4 @@ __marimo__/
 .streamlit/secrets.toml
 
 credentials/mi_proyecto.env
+credentials/c16200113.env
