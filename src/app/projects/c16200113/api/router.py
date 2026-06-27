@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 
-from app.projects.mi_proyecto.api.auth import router as auth_router
-from app.projects.mi_proyecto.api.geo_events import router as geo_events_router
-from app.projects.mi_proyecto.api.geo_events_orm import router as geo_events_orm_router
-from app.projects.mi_proyecto.api.graphql.router import router as graphql_router
-from app.projects.mi_proyecto.api.storage import router as storage_router
-from app.projects.mi_proyecto.infra.settings import PROJECT_NAME
+from app.projects.c16200113.api.auth import router as auth_router
+from app.projects.c16200113.api.geo_events import router as geo_events_router
+from app.projects.c16200113.api.geo_events_orm import router as geo_events_orm_router
+from app.projects.c16200113.api.graphql.router import router as graphql_router
+from app.projects.c16200113.api.storage import router as storage_router
+from app.projects.c16200113.infra.settings import PROJECT_NAME
 
 router = APIRouter()
 

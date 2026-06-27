@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.projects.mi_proyecto.api.deps import get_current_user, get_storage_service
-from app.projects.mi_proyecto.api.schemas import (
+from app.projects.c16200113.api.deps import get_current_user, get_storage_service
+from app.projects.c16200113.api.schemas import (
     ConfirmUploadRequest,
     FileResponse,
     UploadUrlRequest,
     UploadUrlResponse,
 )
-from app.projects.mi_proyecto.domain.exceptions import StorageAccessError, StorageFileNotFoundError
-from app.projects.mi_proyecto.domain.storage_service import StorageService
-from app.projects.mi_proyecto.infra.settings import PROJECT_NAME
+from app.projects.c16200113.domain.exceptions import StorageAccessError, StorageFileNotFoundError
+from app.projects.c16200113.domain.storage_service import StorageService
+from app.projects.c16200113.infra.settings import PROJECT_NAME
 
 router = APIRouter(prefix="/storage", tags=["storage"])
 

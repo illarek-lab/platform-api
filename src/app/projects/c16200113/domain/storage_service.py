@@ -2,10 +2,10 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
-from app.projects.mi_proyecto.domain.exceptions import StorageAccessError, StorageFileNotFoundError
-from app.projects.mi_proyecto.domain.models.file import File
-from app.projects.mi_proyecto.domain.ports import IFileRepository, IStorageClient
-from app.projects.mi_proyecto.infra.settings import settings
+from app.projects.c16200113.domain.exceptions import StorageAccessError, StorageFileNotFoundError
+from app.projects.c16200113.domain.models.file import File
+from app.projects.c16200113.domain.ports import IFileRepository, IStorageClient
+from app.projects.c16200113.infra.settings import settings
 
 
 class StorageService:

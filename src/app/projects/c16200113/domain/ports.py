@@ -1,8 +1,8 @@
 import datetime
 from typing import Any, Optional, Protocol
 
-from app.projects.mi_proyecto.domain.models.file import File
-from app.projects.mi_proyecto.domain.models.geo_event import GeoEvent
+from app.projects.c16200113.domain.models.file import File
+from app.projects.c16200113.domain.models.geo_event import GeoEvent
 
 
 class IRefreshTokenRepository(Protocol):

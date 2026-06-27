@@ -5,17 +5,17 @@ from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.projects.mi_proyecto.domain.auth_service import AuthService
-from app.projects.mi_proyecto.infra.clients.google import GoogleOAuthClient
-from app.projects.mi_proyecto.infra.db.postgres import async_session
-from app.projects.mi_proyecto.domain.storage_service import StorageService
-from app.projects.mi_proyecto.infra.clients.storage import storage_client
-from app.projects.mi_proyecto.infra.repositories.file_orm_repo import FileORMRepository
-from app.projects.mi_proyecto.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
-from app.projects.mi_proyecto.infra.repositories.geo_event_repo import GeoEventRepository
-from app.projects.mi_proyecto.infra.repositories.refresh_token_repo import RefreshTokenRepository
-from app.projects.mi_proyecto.infra.repositories.user_repo import UserRepository
-from app.projects.mi_proyecto.infra.settings import settings
+from app.projects.c16200113.domain.auth_service import AuthService
+from app.projects.c16200113.infra.clients.google import GoogleOAuthClient
+from app.projects.c16200113.infra.db.postgres import async_session
+from app.projects.c16200113.domain.storage_service import StorageService
+from app.projects.c16200113.infra.clients.storage import storage_client
+from app.projects.c16200113.infra.repositories.file_orm_repo import FileORMRepository
+from app.projects.c16200113.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
+from app.projects.c16200113.infra.repositories.geo_event_repo import GeoEventRepository
+from app.projects.c16200113.infra.repositories.refresh_token_repo import RefreshTokenRepository
+from app.projects.c16200113.infra.repositories.user_repo import UserRepository
+from app.projects.c16200113.infra.settings import settings
 
 security = HTTPBearer()
 

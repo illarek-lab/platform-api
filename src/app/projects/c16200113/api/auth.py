@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.projects.mi_proyecto.api.deps import get_auth_service, get_current_user
-from app.projects.mi_proyecto.api.schemas import (
+from app.projects.c16200113.api.deps import get_auth_service, get_current_user
+from app.projects.c16200113.api.schemas import (
     GoogleLoginRequest,
     LoginRequest,
     LogoutRequest,
@@ -9,14 +9,14 @@ from app.projects.mi_proyecto.api.schemas import (
     RegisterResponse,
     TokenResponse,
 )
-from app.projects.mi_proyecto.domain.auth_service import AuthService
-from app.projects.mi_proyecto.domain.exceptions import (
+from app.projects.c16200113.domain.auth_service import AuthService
+from app.projects.c16200113.domain.exceptions import (
     InvalidCredentialsError,
     InvalidGoogleTokenError,
     InvalidRefreshTokenError,
     UserAlreadyExistsError,
 )
-from app.projects.mi_proyecto.infra.token import create_token
+from app.projects.c16200113.infra.token import create_token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
