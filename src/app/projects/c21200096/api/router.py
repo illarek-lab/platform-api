@@ -1,9 +1,5 @@
 from fastapi import APIRouter
 
-import os
-
-import json
-from urllib import request
 
 from app.projects.c21200096.api.auth import router as auth_router
 from app.projects.c21200096.api.geo_events import router as geo_events_router
