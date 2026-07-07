@@ -37,6 +37,7 @@ class RegisterResponse(BaseModel):
 
 # ── Storage ──────────────────────────────────────────────────────────────────
 
+
 class UploadUrlRequest(BaseModel):
     file_name: str
     content_type: str
@@ -75,7 +76,7 @@ class FileResponse(BaseModel):
 
 
 class GeoEventCreate(BaseModel):
-    user_id: Optional[UUID] = None
+    user_id: Optional[str] = None
     latitude: float
     longitude: float
     altitude: Optional[float] = None
@@ -92,7 +93,7 @@ class GeoEventCreate(BaseModel):
 
 class GeoEventResponse(BaseModel):
     id: int
-    user_id: Optional[UUID] = None
+    user_id: Optional[str] = None
     latitude: float
     longitude: float
     altitude: Optional[float] = None
