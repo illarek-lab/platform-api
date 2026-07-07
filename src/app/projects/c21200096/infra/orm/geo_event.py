@@ -1,9 +1,7 @@
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
 
 from sqlalchemy import BigInteger, DateTime, Double, String, Text, func
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.projects.c21200096.infra.orm.base import Base
@@ -14,7 +12,7 @@ class GeoEventORM(Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
 
-    user_id: Mapped[Optional[str]] = mapped_column(PG_UUID(as_uuid=True), nullable=True)
+    user_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
 
     latitude: Mapped[float] = mapped_column(Double)
     longitude: Mapped[float] = mapped_column(Double)
