@@ -1730,6 +1730,85 @@
               ]
             }
           ]
+        },
+        {
+          "name": "Device Tokens",
+          "description": "Registro de tokens FCM por dispositivo, para poder mandar push notifications a un `user_id` sin que el cliente tenga que reenviar el token en cada `POST /notifications/`.\n\nGuarda en MongoDB, colección `matching_user_tokenFMC`. Hace **upsert por `device_id`** — si el mismo dispositivo se registra de nuevo (típico cuando Firebase rota el token), actualiza el documento existente en vez de duplicarlo.\n\nRutas: `api/device_tokens.py` → `infra/repositories/device_token_repo.py` (Mongo).",
+          "item": [
+            {
+              "name": "Register device token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                      "const json = pm.response.json();",
+                      "pm.test('id present', () => pm.expect(json.id).to.be.a('string'));",
+                      "pm.test('fcm_token matches', () => pm.expect(json.fcm_token).to.eql(pm.collectionVariables.get('fcmToken')));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": { "type": "noauth" },
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_id\": \"64f1a2b3-c4d5-e6f7-a8b9-c0d1e2f3a4b5\",\n  \"user_name\": \"Juan Pérez\",\n  \"device_id\": \"{{deviceId}}\",\n  \"fcm_token\": \"{{fcmToken}}\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": "{{baseUrl}}/{{projectSlug}}/device-tokens/",
+                "description": "`POST /{projectSlug}/device-tokens/`\n\n| Campo | Tipo | Requerido |\n|-------|------|-----------|\n| `user_id` | string | ✓ |\n| `user_name` | string | ✓ |\n| `device_id` | string | ✓ |\n| `fcm_token` | string | ✓ |\n\nSi ya existe un registro con el mismo `device_id`, lo actualiza (upsert) — el `id` se mantiene igual entre llamadas, solo cambia `fcm_token` y `updated_at`."
+              },
+              "response": [
+                {
+                  "name": "201 Created — registrado",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [{ "key": "Content-Type", "value": "application/json" }],
+                    "body": { "mode": "raw", "raw": "{\n  \"user_id\": \"64f1a2b3-c4d5-e6f7-a8b9-c0d1e2f3a4b5\",\n  \"user_name\": \"Juan Pérez\",\n  \"device_id\": \"device-test-001\",\n  \"fcm_token\": \"fcm-token-xyz\"\n}", "options": { "raw": { "language": "json" } } },
+                    "url": "{{baseUrl}}/{{projectSlug}}/device-tokens/"
+                  },
+                  "status": "Created", "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [{ "key": "Content-Type", "value": "application/json" }],
+                  "cookie": [],
+                  "body": "{\n  \"id\": \"6a4db9ca5a10ee0f79ceeb3f\",\n  \"user_id\": \"64f1a2b3-c4d5-e6f7-a8b9-c0d1e2f3a4b5\",\n  \"user_name\": \"Juan Pérez\",\n  \"device_id\": \"device-test-001\",\n  \"fcm_token\": \"fcm-token-xyz\",\n  \"updated_at\": \"2026-07-08T02:45:28.865000\"\n}"
+                },
+                {
+                  "name": "201 Created — mismo device_id (upsert, token actualizado)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [{ "key": "Content-Type", "value": "application/json" }],
+                    "body": { "mode": "raw", "raw": "{\n  \"user_id\": \"64f1a2b3-c4d5-e6f7-a8b9-c0d1e2f3a4b5\",\n  \"user_name\": \"Juan Pérez\",\n  \"device_id\": \"device-test-001\",\n  \"fcm_token\": \"fcm-token-NEW\"\n}", "options": { "raw": { "language": "json" } } },
+                    "url": "{{baseUrl}}/{{projectSlug}}/device-tokens/"
+                  },
+                  "status": "Created", "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [{ "key": "Content-Type", "value": "application/json" }],
+                  "cookie": [],
+                  "body": "{\n  \"id\": \"6a4db9ca5a10ee0f79ceeb3f\",\n  \"user_id\": \"64f1a2b3-c4d5-e6f7-a8b9-c0d1e2f3a4b5\",\n  \"user_name\": \"Juan Pérez\",\n  \"device_id\": \"device-test-001\",\n  \"fcm_token\": \"fcm-token-NEW\",\n  \"updated_at\": \"2026-07-08T02:45:39.916000\"\n}"
+                },
+                {
+                  "name": "422 — Campo requerido faltante",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [{ "key": "Content-Type", "value": "application/json" }],
+                    "body": { "mode": "raw", "raw": "{\n  \"user_id\": \"u1\"\n}", "options": { "raw": { "language": "json" } } },
+                    "url": "{{baseUrl}}/{{projectSlug}}/device-tokens/"
+                  },
+                  "status": "Unprocessable Entity", "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [{ "key": "Content-Type", "value": "application/json" }],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    { \"type\": \"missing\", \"loc\": [\"body\", \"user_name\"], \"msg\": \"Field required\" },\n    { \"type\": \"missing\", \"loc\": [\"body\", \"device_id\"], \"msg\": \"Field required\" },\n    { \"type\": \"missing\", \"loc\": [\"body\", \"fcm_token\"], \"msg\": \"Field required\" }\n  ]\n}"
+                }
+              ]
+            }
+          ]
         }
       ]
     }
