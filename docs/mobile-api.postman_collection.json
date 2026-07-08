@@ -1651,7 +1651,7 @@
         },
         {
           "name": "Notifications",
-          "description": "Envío de push notifications vía Firebase Cloud Messaging (FCM). El endpoint guarda la notificación en MongoDB (colección `notifications`) con estado `pending`, intenta el envío real con el Admin SDK de Firebase, y actualiza el estado a `sent` o `failed` según el resultado — nunca lanza 500 si el envío falla.\n\nRutas: `api/notifications.py` → `domain/notification_service.py` → `infra/repositories/notification_repo.py` (Mongo) + `infra/clients/firebase.py` (FCM).\n\nCredenciales de Firebase: `credentials/{projectSlug}-firebase-adminsdk.json`.",
+          "description": "Envío de push notifications vía Firebase Cloud Messaging (FCM). El endpoint guarda la notificación en MongoDB (colección `notifications`) con estado `pending`, intenta el envío real con el Admin SDK de Firebase, y actualiza el estado a `sent` o `failed` según el resultado — nunca lanza 500 si el envío falla.\n\nRutas: `api/notifications.py` → `domain/notification_service.py` → `infra/repositories/notification_repo.py` (Mongo) + `infra/clients/firebase.py` (FCM).\n\nCredenciales de Firebase: `credentials_FMC/{projectSlug}-firebase-adminsdk.json` (subir vía `POST /credentials_FMC/upload` o `/credentials_FMC/ui`).",
           "item": [
             {
               "name": "Send notification",
