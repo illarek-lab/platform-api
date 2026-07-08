@@ -36,6 +36,7 @@ dependencies = [
     "motor>=3.7.1",
     "strawberry-graphql[fastapi]>=0.316.0",
     "aioboto3>=15.5.0",
+    "firebase-admin>=7.5.0",
 ]
 
 [dependency-groups]
