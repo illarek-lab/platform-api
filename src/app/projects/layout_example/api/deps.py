@@ -12,6 +12,7 @@ from app.projects.layout_example.infra.clients.google import GoogleOAuthClient
 from app.projects.layout_example.infra.db.postgres import async_session
 from app.projects.layout_example.domain.storage_service import StorageService
 from app.projects.layout_example.infra.clients.storage import storage_client
+from app.projects.layout_example.infra.repositories.device_token_repo import DeviceTokenRepository
 from app.projects.layout_example.infra.repositories.file_orm_repo import FileORMRepository
 from app.projects.layout_example.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
 from app.projects.layout_example.infra.repositories.geo_event_repo import GeoEventRepository
@@ -28,6 +29,7 @@ _refresh_token_repo = RefreshTokenRepository()
 _auth_service = AuthService(_user_repo, _google_client, _refresh_token_repo, settings.REFRESH_TOKEN_EXPIRE_DAYS)
 _notification_repo = NotificationRepository()
 _notification_service = NotificationService(_notification_repo, firebase_client)
+_device_token_repo = DeviceTokenRepository()
 
 
 def get_auth_service() -> AuthService:
@@ -36,6 +38,10 @@ def get_auth_service() -> AuthService:
 
 def get_notification_service() -> NotificationService:
     return _notification_service
+
+
+def get_device_token_repo() -> DeviceTokenRepository:
+    return _device_token_repo
 
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:

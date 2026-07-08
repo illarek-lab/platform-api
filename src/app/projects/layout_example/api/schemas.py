@@ -130,3 +130,21 @@ class NotificationResponse(BaseModel):
     error: Optional[str] = None
     created_at: datetime
     sent_at: Optional[datetime] = None
+
+
+# ── Device Tokens ─────────────────────────────────────────────────────────────
+
+class DeviceTokenCreate(BaseModel):
+    user_id: str
+    user_name: str
+    device_id: str
+    fcm_token: str
+
+
+class DeviceTokenResponse(BaseModel):
+    id: str
+    user_id: str
+    user_name: str
+    device_id: str
+    fcm_token: str
+    updated_at: datetime
