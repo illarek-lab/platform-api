@@ -149,6 +149,7 @@ activemq-data/
 
 # Credentials
 credentials/*.env
+credentials/*.json
 
 # Environments
 .env
