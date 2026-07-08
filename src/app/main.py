@@ -125,7 +125,7 @@ async def list_students():
     return {"students": students}
 
 
-@app.post("/credentials-fcm/upload", tags=["credentials"])
+@app.post("/credentials_FMC/upload", tags=["credentials"])
 async def upload_fcm_credential(file: UploadFile):
     safe = _safe_fcm_filename(file.filename or "")
     if not safe:
@@ -176,7 +176,7 @@ async def upload_fcm_credential(file: UploadFile):
     return {"message": f"Archivo '{safe}' subido correctamente", "filename": safe}
 
 
-@app.get("/credentials-fcm/students", tags=["credentials"])
+@app.get("/credentials_FMC/students", tags=["credentials"])
 async def list_fcm_students():
     cursor = _fcm_students_col.find({}, {"_id": 0}).sort("project_name", 1)
     students = await cursor.to_list(length=None)
@@ -277,7 +277,7 @@ async def credentials_ui():
   </a>
   <div class="topbar-links">
     <a href="/">Dashboard</a>
-    <a href="/credentials-fcm/ui">Subir Firebase (FCM)</a>
+    <a href="/credentials_FMC/ui">Subir Firebase (FCM)</a>
     <a href="/docs">Swagger UI</a>
   </div>
 </div>
@@ -406,7 +406,7 @@ async function uploadFile(file) {{
 </html>"""
 
 
-@app.get("/credentials-fcm/ui", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/credentials_FMC/ui", response_class=HTMLResponse, include_in_schema=False)
 async def credentials_fcm_ui():
     cursor = _fcm_students_col.find({}, {"_id": 0}).sort("project_name", 1)
     students = await cursor.to_list(length=None)
@@ -601,7 +601,7 @@ async function uploadFile(file) {{
   form.append('file', file);
   document.getElementById('errorPanel').style.display = 'none';
   try {{
-    const res = await fetch('/credentials-fcm/upload', {{ method: 'POST', body: form }});
+    const res = await fetch('/credentials_FMC/upload', {{ method: 'POST', body: form }});
     const text = await res.text();
     let data;
     try {{ data = JSON.parse(text); }} catch(_) {{
@@ -733,6 +733,7 @@ async def landing():
   </a>
   <div class="topbar-links">
     <a href="/credentials/ui">Subir Credentials</a>
+    <a href="/credentials_FMC/ui">Subir Firebase (FCM)</a>
     <a href="/docs">Swagger UI</a>
     <a href="/redoc">ReDoc</a>
   </div>
