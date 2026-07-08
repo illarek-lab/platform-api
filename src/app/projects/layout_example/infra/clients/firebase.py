@@ -6,7 +6,7 @@ from firebase_admin import credentials, messaging
 
 from app.projects.layout_example.infra.settings import BASE_DIR, PROJECT_NAME
 
-_cred_path = BASE_DIR / "credentials" / f"{PROJECT_NAME}-firebase-adminsdk.json"
+_cred_path = BASE_DIR / "credentials_FMC" / f"{PROJECT_NAME}-firebase-adminsdk.json"
 _app = firebase_admin.initialize_app(credentials.Certificate(str(_cred_path)), name=PROJECT_NAME)
 
 
