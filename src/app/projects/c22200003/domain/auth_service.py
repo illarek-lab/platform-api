@@ -1,14 +1,14 @@
 import datetime
 from typing import Optional
 
-from app.projects.layout_example.domain.exceptions import (
+from app.projects.c22200003.domain.exceptions import (
     InvalidCredentialsError,
     InvalidGoogleTokenError,
     InvalidRefreshTokenError,
     UserAlreadyExistsError,
 )
-from app.projects.layout_example.domain.ports import IGoogleOAuthClient, IRefreshTokenRepository, IUserRepository
-from app.projects.layout_example.domain.security import generate_refresh_token_value, hash_password, verify_password
+from app.projects.c22200003.domain.ports import IGoogleOAuthClient, IRefreshTokenRepository, IUserRepository
+from app.projects.c22200003.domain.security import generate_refresh_token_value, hash_password, verify_password
 
 
 class AuthService:

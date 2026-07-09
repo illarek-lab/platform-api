@@ -2,8 +2,8 @@ from typing import Optional
 
 import strawberry
 
-from app.projects.layout_example.api.graphql.types import GeoEventInput, GeoEventType
-from app.projects.layout_example.infra.repositories.geo_event_repo import GeoEventRepository
+from app.projects.c22200003.api.graphql.types import GeoEventInput, GeoEventType
+from app.projects.c22200003.infra.repositories.geo_event_repo import GeoEventRepository
 
 
 def _to_type(event) -> GeoEventType:

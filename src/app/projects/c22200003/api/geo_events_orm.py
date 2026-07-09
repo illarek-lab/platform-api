@@ -2,9 +2,9 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.projects.layout_example.api.deps import get_geo_event_orm_repo
-from app.projects.layout_example.api.schemas import GeoEventCreate, GeoEventResponse
-from app.projects.layout_example.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
+from app.projects.c22200003.api.deps import get_geo_event_orm_repo
+from app.projects.c22200003.api.schemas import GeoEventCreate, GeoEventResponse
+from app.projects.c22200003.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
 
 router = APIRouter(prefix="/geo-events-orm", tags=["geo-events-orm"])
 
