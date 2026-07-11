@@ -1,7 +1,7 @@
 import datetime
 from typing import Any, Optional
 
-from app.projects.mi_proyecto.infra.db.mongo import database
+from app.projects.c16200113.infra.db.mongo import database
 
 
 class RefreshTokenRepository:

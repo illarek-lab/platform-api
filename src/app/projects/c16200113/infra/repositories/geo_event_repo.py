@@ -3,7 +3,7 @@ from typing import Optional
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.projects.mi_proyecto.domain.models.geo_event import GeoEvent
+from app.projects.c16200113.domain.models.geo_event import GeoEvent
 
 
 class GeoEventRepository:

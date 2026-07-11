@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import BigInteger, Boolean, DateTime, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.projects.mi_proyecto.infra.orm.base import Base
+from app.projects.c16200113.infra.orm.base import Base
 
 
 class FileORM(Base):

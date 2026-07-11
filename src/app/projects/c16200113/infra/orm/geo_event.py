@@ -6,7 +6,7 @@ from sqlalchemy import BigInteger, DateTime, Double, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.projects.mi_proyecto.infra.orm.base import Base
+from app.projects.c16200113.infra.orm.base import Base
 
 
 class GeoEventORM(Base):

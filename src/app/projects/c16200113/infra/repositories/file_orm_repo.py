@@ -4,8 +4,8 @@ from typing import Optional
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.projects.mi_proyecto.domain.models.file import File
-from app.projects.mi_proyecto.infra.orm.file import FileORM
+from app.projects.c16200113.domain.models.file import File
+from app.projects.c16200113.infra.orm.file import FileORM
 
 
 class FileORMRepository:

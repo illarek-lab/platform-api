@@ -2,7 +2,7 @@ import datetime
 
 import jwt
 
-from app.projects.mi_proyecto.infra.settings import settings
+from app.projects.c16200113.infra.settings import settings
 
 
 def create_token(user_id: str, email: str) -> str:
