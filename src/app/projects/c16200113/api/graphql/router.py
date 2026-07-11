@@ -3,9 +3,9 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.fastapi import GraphQLRouter
 
-from app.projects.mi_proyecto.api.deps import get_db_session
-from app.projects.mi_proyecto.api.graphql.resolvers.geo_events import GeoEventMutation, GeoEventQuery
-from app.projects.mi_proyecto.infra.repositories.geo_event_repo import GeoEventRepository
+from app.projects.c16200113.api.deps import get_db_session
+from app.projects.c16200113.api.graphql.resolvers.geo_events import GeoEventMutation, GeoEventQuery
+from app.projects.c16200113.infra.repositories.geo_event_repo import GeoEventRepository
 
 
 async def get_context(session: AsyncSession = Depends(get_db_session)):
