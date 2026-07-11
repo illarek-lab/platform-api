@@ -1,6 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from app.projects.mi_proyecto.infra.settings import settings
+from app.projects.c16200113.infra.settings import settings
 
 
 class MongoDB:
