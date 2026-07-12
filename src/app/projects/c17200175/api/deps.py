@@ -8,6 +8,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.projects.c17200175.domain.auth_service import AuthService
 from app.projects.c17200175.infra.clients.google import GoogleOAuthClient
 from app.projects.c17200175.infra.db.postgres import async_session
+from app.projects.c17200175.domain.notification_service import NotificationService
+from app.projects.c17200175.infra.clients.firebase import firebase_client
+from app.projects.c17200175.infra.repositories.device_token_repo import DeviceTokenRepository
+from app.projects.c17200175.infra.repositories.notification_repo import NotificationRepository
 from app.projects.c17200175.domain.storage_service import StorageService
 from app.projects.c17200175.infra.clients.storage import storage_client
 from app.projects.c17200175.infra.repositories.file_orm_repo import FileORMRepository
@@ -23,10 +27,23 @@ _user_repo = UserRepository()
 _google_client = GoogleOAuthClient()
 _refresh_token_repo = RefreshTokenRepository()
 _auth_service = AuthService(_user_repo, _google_client, _refresh_token_repo, settings.REFRESH_TOKEN_EXPIRE_DAYS)
+# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
+# Reemplazala por tu propia implementacion cuando llegues a ese lab.
+_notification_repo = NotificationRepository()
+_notification_service = NotificationService(_notification_repo, firebase_client)
+_device_token_repo = DeviceTokenRepository()
 
 
 def get_auth_service() -> AuthService:
     return _auth_service
+
+
+def get_notification_service() -> NotificationService:
+    return _notification_service
+
+
+def get_device_token_repo() -> DeviceTokenRepository:
+    return _device_token_repo
 
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
