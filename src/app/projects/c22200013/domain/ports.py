@@ -42,9 +42,6 @@ class IStorageClient(Protocol):
     async def get_url(self, key: str, expires_in: int) -> str: ...
 
 
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
-
 class INotificationRepository(Protocol):
     async def create(self, data: dict[str, Any]) -> Notification: ...
     async def mark_sent(self, id: str) -> None: ...
@@ -52,4 +49,7 @@ class INotificationRepository(Protocol):
 
 
 class IFCMClient(Protocol):
-    async def send_notification(self, token: str, title: str, body: str, data: Optional[dict[str, str]]) -> str: ...
+    async def send_notification(
+        self, token: str, title: str, body: str, data: Optional[dict[str, str]]
+    ) -> str: ...
+

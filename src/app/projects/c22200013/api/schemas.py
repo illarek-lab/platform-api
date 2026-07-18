@@ -108,9 +108,7 @@ class GeoEventResponse(BaseModel):
     created_at: datetime
 
 
-# ── Notifications ────────────────────────────────────────────────────────────
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
+# ── Notifications (FCM) ──────────────────────────────────────────────────────
 
 class NotificationCreate(BaseModel):
     user_id: str
@@ -132,8 +130,6 @@ class NotificationResponse(BaseModel):
     created_at: datetime
     sent_at: Optional[datetime] = None
 
-
-# ── Device Tokens ─────────────────────────────────────────────────────────────
 
 class DeviceTokenCreate(BaseModel):
     user_id: str
