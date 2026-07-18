@@ -1,6 +1,3 @@
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
-
 from datetime import datetime, timezone
 from typing import Any
 
@@ -13,7 +10,6 @@ _collection = database["notifications"]
 
 
 class NotificationRepository:
-
     async def create(self, data: dict[str, Any]) -> Notification:
         doc = {
             **data,

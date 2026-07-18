@@ -1,6 +1,3 @@
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
-
 from datetime import datetime, timezone
 from typing import Any
 
@@ -13,7 +10,6 @@ _collection = database["matching_user_tokenFMC"]
 
 
 class DeviceTokenRepository:
-
     async def upsert(self, data: dict[str, Any]) -> DeviceToken:
         doc = await _collection.find_one_and_update(
             {"device_id": data["device_id"]},

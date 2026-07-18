@@ -1,6 +1,3 @@
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
-
 from datetime import datetime
 from typing import Optional
 

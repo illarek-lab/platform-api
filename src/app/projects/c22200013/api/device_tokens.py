@@ -1,6 +1,3 @@
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
-
 from fastapi import APIRouter, Depends
 
 from app.projects.c22200013.api.deps import get_device_token_repo
