@@ -7,6 +7,22 @@ from app.projects.c20200184.api.graphql.router import router as graphql_router
 from app.projects.c20200184.api.storage import router as storage_router
 from app.projects.c20200184.infra.settings import PROJECT_NAME
 
+from app.projects.c20200184.api.auth import router as auth_router
+from app.projects.c20200184.api.device_tokens import router as device_tokens_router
+from app.projects.c20200184.api.geo_events import router as geo_events_router
+from app.projects.c20200184.api.geo_events_orm import router as geo_events_orm_router
+from app.projects.c20200184.api.graphql.router import router as graphql_router
+from app.projects.c20200184.api.notifications import router as notifications_router
+from app.projects.c20200184.api.storage import router as storage_router
+
+router.include_router(auth_router) # type: ignore
+router.include_router(geo_events_router) # type: ignore
+router.include_router(geo_events_orm_router)# type: ignore
+router.include_router(graphql_router, prefix="/graphql")# type: ignore
+router.include_router(storage_router)# type: ignore
+router.include_router(notifications_router)# type: ignore
+router.include_router(device_tokens_router)# type: ignore
+
 router = APIRouter()
 
 

@@ -17,6 +17,28 @@ from app.projects.c20200184.infra.repositories.refresh_token_repo import Refresh
 from app.projects.c20200184.infra.repositories.user_repo import UserRepository
 from app.projects.c20200184.infra.settings import settings
 
+from app.projects.c20200184.domain.auth_service import AuthService
+from app.projects.c20200184.domain.notification_service import NotificationService
+from app.projects.c20200184.infra.clients.firebase import firebase_client
+from app.projects.c20200184.infra.repositories.device_token_repo import DeviceTokenRepository
+from app.projects.c20200184.infra.repositories.notification_repo import NotificationRepository
+
+_user_repo = UserRepository()
+_notification_repo = NotificationRepository()
+_notification_service = NotificationService(_notification_repo, firebase_client)
+_device_token_repo = DeviceTokenRepository()
+
+
+def get_auth_service() -> AuthService:
+    return _auth_service
+
+def get_notification_service() -> NotificationService:
+    return _notification_service
+
+def get_device_token_repo() -> DeviceTokenRepository:
+    return _device_token_repo
+
+
 security = HTTPBearer()
 
 _user_repo = UserRepository()
