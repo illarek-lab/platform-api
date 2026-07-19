@@ -106,3 +106,45 @@ class GeoEventResponse(BaseModel):
     device_model: Optional[str] = None
     recorded_at: datetime
     created_at: datetime
+
+
+# ── Notifications ────────────────────────────────────────────────────────────
+
+class NotificationCreate(BaseModel):
+    user_id: str
+    token: str
+    title: str
+    body: str
+    data: Optional[dict[str, str]] = None
+
+
+class NotificationResponse(BaseModel):
+    id: str
+    user_id: str
+    token: str
+    title: str
+    body: str
+    data: Optional[dict[str, str]] = None
+    status: str
+    error: Optional[str] = None
+    created_at: datetime
+    sent_at: Optional[datetime] = None
+
+
+# ── Device Tokens ─────────────────────────────────────────────────────────────
+
+class DeviceTokenCreate(BaseModel):
+    user_id: str
+    user_name: str
+    device_id: str
+    fcm_token: str
+
+
+class DeviceTokenResponse(BaseModel):
+    id: str
+    user_id: str
+    user_name: str
+    device_id: str
+    fcm_token: str
+    updated_at: datetime
+
