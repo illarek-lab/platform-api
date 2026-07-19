@@ -1,6 +1,6 @@
 
 # api/device_tokens.py
-=======
+
 # NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
 # Reemplazala por tu propia implementacion cuando llegues a ese lab.
 
@@ -20,7 +20,5 @@ async def register_device_token(
     repo: DeviceTokenRepository = Depends(get_device_token_repo),
 ):
 
-    return await repo.upsert(payload.model_dump())
-=======
     return await repo.upsert(payload.model_dump())
 
