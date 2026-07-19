@@ -36,6 +36,8 @@ dependencies = [
     "motor>=3.7.1",
     "strawberry-graphql[fastapi]>=0.316.0",
     "aioboto3>=15.5.0",
+    "firebase-admin>=7.5.0",
+    "ultralytics>=8.4.92",
 ]
 
 [dependency-groups]
@@ -45,6 +47,7 @@ dev = [
     "pytest-cov>=7.0.0",
     "ruff>=0.13.2",
     "mypy>=1.18.2",
+    "ipykernel>=6.30.0",
 ]
 
 [tool.ruff]

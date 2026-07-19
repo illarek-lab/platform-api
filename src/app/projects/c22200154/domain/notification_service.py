@@ -1,3 +1,8 @@
+
+=======
+# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
+# Reemplazala por tu propia implementacion cuando llegues a ese lab.
+
 from typing import Optional
 
 from app.projects.c22200154.domain.models.notification import Notification
@@ -33,4 +38,8 @@ class NotificationService:
             return notification.model_copy(update={"status": "failed", "error": str(exc)})
 
         await self._repo.mark_sent(notification.id)
+
         return notification.model_copy(update={"status": "sent"})
+=======
+        return notification.model_copy(update={"status": "sent"})
+

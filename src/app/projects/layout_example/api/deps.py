@@ -6,13 +6,17 @@ from fastapi.security import HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.projects.layout_example.domain.auth_service import AuthService
+from app.projects.layout_example.domain.notification_service import NotificationService
+from app.projects.layout_example.infra.clients.firebase import firebase_client
 from app.projects.layout_example.infra.clients.google import GoogleOAuthClient
 from app.projects.layout_example.infra.db.postgres import async_session
 from app.projects.layout_example.domain.storage_service import StorageService
 from app.projects.layout_example.infra.clients.storage import storage_client
+from app.projects.layout_example.infra.repositories.device_token_repo import DeviceTokenRepository
 from app.projects.layout_example.infra.repositories.file_orm_repo import FileORMRepository
 from app.projects.layout_example.infra.repositories.geo_event_orm_repo import GeoEventORMRepository
 from app.projects.layout_example.infra.repositories.geo_event_repo import GeoEventRepository
+from app.projects.layout_example.infra.repositories.notification_repo import NotificationRepository
 from app.projects.layout_example.infra.repositories.refresh_token_repo import RefreshTokenRepository
 from app.projects.layout_example.infra.repositories.user_repo import UserRepository
 from app.projects.layout_example.infra.settings import settings
@@ -23,10 +27,21 @@ _user_repo = UserRepository()
 _google_client = GoogleOAuthClient()
 _refresh_token_repo = RefreshTokenRepository()
 _auth_service = AuthService(_user_repo, _google_client, _refresh_token_repo, settings.REFRESH_TOKEN_EXPIRE_DAYS)
+_notification_repo = NotificationRepository()
+_notification_service = NotificationService(_notification_repo, firebase_client)
+_device_token_repo = DeviceTokenRepository()
 
 
 def get_auth_service() -> AuthService:
     return _auth_service
+
+
+def get_notification_service() -> NotificationService:
+    return _notification_service
+
+
+def get_device_token_repo() -> DeviceTokenRepository:
+    return _device_token_repo
 
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:

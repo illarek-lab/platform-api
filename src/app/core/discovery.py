@@ -4,6 +4,7 @@ from typing import Any
 
 import app.projects as projects
 from fastapi import FastAPI
+from pydantic import ValidationError
 
 registry: list[dict[str, Any]] = []
 
@@ -55,6 +56,10 @@ def load_projects(app: FastAPI):
                 print(f"✔ LOADED: {m.name}")
             else:
                 print(f"⚠ No `router` object in {m.name}")
+
+        except ValidationError as e:
+            missing = ", ".join(err["loc"][0] for err in e.errors() if err["type"] == "missing")
+            print(f"⏭ SKIPPED {m.name}: missing credentials ({missing})")
 
         except Exception as e:
             print(f"❌ ERROR {m.name}: {e}")
