@@ -1,7 +1,19 @@
+
 # domain/models/notification.py
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
+
+=======
+# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
+# Reemplazala por tu propia implementacion cuando llegues a ese lab.
+
+from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel
+
+
 
 class Notification(BaseModel):
     id: str
@@ -15,4 +27,8 @@ class Notification(BaseModel):
     created_at: datetime
     sent_at: Optional[datetime] = None
 
+
     model_config = {"from_attributes": True}
+=======
+    model_config = {"from_attributes": True}
+

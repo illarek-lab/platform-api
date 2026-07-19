@@ -1,4 +1,10 @@
+
 # api/device_tokens.py
+=======
+# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
+# Reemplazala por tu propia implementacion cuando llegues a ese lab.
+
+
 from fastapi import APIRouter, Depends
 
 from app.projects.c22200154.api.deps import get_device_token_repo
@@ -13,4 +19,8 @@ async def register_device_token(
     payload: DeviceTokenCreate,
     repo: DeviceTokenRepository = Depends(get_device_token_repo),
 ):
+
     return await repo.upsert(payload.model_dump())
+=======
+    return await repo.upsert(payload.model_dump())
+

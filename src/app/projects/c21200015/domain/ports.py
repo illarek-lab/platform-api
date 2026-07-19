@@ -3,6 +3,7 @@ from typing import Any, Optional, Protocol
 
 from app.projects.c21200015.domain.models.file import File
 from app.projects.c21200015.domain.models.geo_event import GeoEvent
+from app.projects.c21200015.domain.models.notification import Notification
 
 
 class IRefreshTokenRepository(Protocol):
@@ -39,3 +40,16 @@ class IStorageClient(Protocol):
     async def get_upload_url(self, key: str, content_type: str, expires_in: int) -> str: ...
     async def delete(self, key: str) -> None: ...
     async def get_url(self, key: str, expires_in: int) -> str: ...
+
+
+# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
+# Reemplazala por tu propia implementacion cuando llegues a ese lab.
+
+class INotificationRepository(Protocol):
+    async def create(self, data: dict[str, Any]) -> Notification: ...
+    async def mark_sent(self, id: str) -> None: ...
+    async def mark_failed(self, id: str, error: str) -> None: ...
+
+
+class IFCMClient(Protocol):
+    async def send_notification(self, token: str, title: str, body: str, data: Optional[dict[str, str]]) -> str: ...

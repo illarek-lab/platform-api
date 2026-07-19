@@ -149,6 +149,8 @@ activemq-data/
 
 # Credentials
 credentials/*.env
+credentials/*.json
+credentials_FMC/*.json
 
 # Environments
 .env
