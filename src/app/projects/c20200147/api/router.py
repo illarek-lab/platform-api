@@ -6,6 +6,8 @@ from app.projects.c20200147.api.geo_events_orm import router as geo_events_orm_r
 from app.projects.c20200147.api.graphql.router import router as graphql_router
 from app.projects.c20200147.api.storage import router as storage_router
 from app.projects.c20200147.infra.settings import PROJECT_NAME
+from app.projects.c20200147.api.device_tokens import router as device_tokens_router
+from app.projects.c20200147.api.notifications import router as notifications_router
 
 router = APIRouter()
 
@@ -20,3 +22,5 @@ router.include_router(geo_events_router)
 router.include_router(geo_events_orm_router)
 router.include_router(graphql_router, prefix="/graphql")
 router.include_router(storage_router)
+router.include_router(notifications_router)
+router.include_router(device_tokens_router)

@@ -16,6 +16,10 @@ from app.projects.c20200147.infra.repositories.geo_event_repo import GeoEventRep
 from app.projects.c20200147.infra.repositories.refresh_token_repo import RefreshTokenRepository
 from app.projects.c20200147.infra.repositories.user_repo import UserRepository
 from app.projects.c20200147.infra.settings import settings
+from app.projects.c20200147.domain.notification_service import NotificationService
+from app.projects.c20200147.infra.clients.firebase import firebase_client
+from app.projects.c20200147.infra.repositories.device_token_repo import DeviceTokenRepository
+from app.projects.c20200147.infra.repositories.notification_repo import NotificationRepository
 
 security = HTTPBearer()
 
@@ -23,6 +27,9 @@ _user_repo = UserRepository()
 _google_client = GoogleOAuthClient()
 _refresh_token_repo = RefreshTokenRepository()
 _auth_service = AuthService(_user_repo, _google_client, _refresh_token_repo, settings.REFRESH_TOKEN_EXPIRE_DAYS)
+_notification_repo = NotificationRepository()
+_notification_service = NotificationService(_notification_repo, firebase_client)
+_device_token_repo = DeviceTokenRepository()
 
 
 def get_auth_service() -> AuthService:
@@ -56,3 +63,10 @@ def get_current_user(token=Depends(security)):
         return {"user_id": payload["sub"], "email": payload["email"]}
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid token") from None
+    
+def get_notification_service() -> NotificationService:
+    return _notification_service
+
+
+def get_device_token_repo() -> DeviceTokenRepository:
+    return _device_token_repo
