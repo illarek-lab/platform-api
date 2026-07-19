@@ -4,7 +4,7 @@ from typing import Optional
 import firebase_admin
 from firebase_admin import credentials, messaging
 
-from app.projects.layout_example.infra.settings import BASE_DIR, PROJECT_NAME
+from app.projects.c22200154.infra.settings import BASE_DIR, PROJECT_NAME
 
 _cred_path = BASE_DIR / "credentials_FMC" / f"c22200154-firebase-adminsdk.json"
 _app = firebase_admin.initialize_app(credentials.Certificate(str(_cred_path)), name=PROJECT_NAME)
