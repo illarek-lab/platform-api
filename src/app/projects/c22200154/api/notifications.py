@@ -1,5 +1,9 @@
+
+# api/notifications.py
+=======
 # NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
 # Reemplazala por tu propia implementacion cuando llegues a ese lab.
+
 
 from fastapi import APIRouter, Depends
 
@@ -16,4 +20,8 @@ async def send_notification(
     service: NotificationService = Depends(get_notification_service),
 ):
     notification = await service.send(**payload.model_dump())
+
     return NotificationResponse(**notification.model_dump())
+=======
+    return NotificationResponse(**notification.model_dump())
+

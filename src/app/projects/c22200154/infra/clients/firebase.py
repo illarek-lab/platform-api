@@ -1,5 +1,8 @@
+
+=======
 # NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
 # Reemplazala por tu propia implementacion cuando llegues a ese lab.
+
 
 import asyncio
 from typing import Optional
@@ -7,6 +10,15 @@ from typing import Optional
 import firebase_admin
 from firebase_admin import credentials, messaging
 
+from app.projects.c22200154.infra.settings import BASE_DIR, PROJECT_NAME
+
+_cred_path = BASE_DIR / "credentials_FMC" / f"c22200154-firebase-adminsdk.json"
+_app = firebase_admin.initialize_app(credentials.Certificate(str(_cred_path)), name=PROJECT_NAME)
+
+
+class FirebaseClient:
+
+=======
 from app.projects.c22200154.infra.settings import BASE_DIR, PROJECT_NAME
 
 _cred_path = BASE_DIR / "credentials_FMC" / f"{PROJECT_NAME}-firebase-adminsdk.json"
@@ -21,6 +33,7 @@ if _cred_path.exists():
 
 
 class FirebaseClient:
+
     async def send_notification(
         self,
         token: str,
@@ -28,6 +41,8 @@ class FirebaseClient:
         body: str,
         data: Optional[dict[str, str]] = None,
     ) -> str:
+
+=======
         if _app is None:
             raise RuntimeError(
                 f"Firebase credentials not configured: {_cred_path}"
@@ -43,3 +58,10 @@ class FirebaseClient:
 
 
 firebase_client = FirebaseClient()
+=======
+
+        return await asyncio.to_thread(messaging.send, message, app=_app)
+
+
+firebase_client = FirebaseClient()
+
