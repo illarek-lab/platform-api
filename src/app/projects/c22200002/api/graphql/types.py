@@ -7,7 +7,7 @@ import strawberry
 @strawberry.type
 class GeoEventType:
     id: int
-    user_id: Optional[UUID]
+    user_id: Optional[str]
     latitude: float
     longitude: float
     altitude: Optional[float]
@@ -26,7 +26,7 @@ class GeoEventType:
 class GeoEventInput:
     latitude: float
     longitude: float
-    user_id: Optional[UUID] = None
+    user_id: Optional[str] = None
     altitude: Optional[float] = None
     accuracy: Optional[float] = None
     speed: Optional[float] = None
