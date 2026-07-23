@@ -1,5 +1,3 @@
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
 
 from fastapi import APIRouter, Depends
 
@@ -8,7 +6,6 @@ from app.projects.c22200002.api.schemas import DeviceTokenCreate, DeviceTokenRes
 from app.projects.c22200002.infra.repositories.device_token_repo import DeviceTokenRepository
 
 router = APIRouter(prefix="/device-tokens", tags=["device-tokens"])
-
 
 @router.post("/", response_model=DeviceTokenResponse, status_code=201)
 async def register_device_token(

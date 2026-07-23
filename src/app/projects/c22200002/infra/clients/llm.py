@@ -2,7 +2,6 @@ import httpx
 
 from app.projects.c22200002.infra.settings import settings
 
-
 class LLMClient:
 
     def __init__(self) -> None:
@@ -25,6 +24,5 @@ class LLMClient:
             )
             response.raise_for_status()
         return response.json()["choices"][0]["message"]["content"]
-
 
 llm_client = LLMClient()

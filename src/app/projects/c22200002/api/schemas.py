@@ -4,39 +4,29 @@ from uuid import UUID
 
 from pydantic import BaseModel, EmailStr
 
-
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
     device_id: Optional[str] = None
 
-
 class GoogleLoginRequest(BaseModel):
     token: str
     device_id: Optional[str] = None
-
 
 class TokenResponse(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
 
-
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
     device_id: Optional[str] = None
 
-
 class LogoutRequest(BaseModel):
     refresh_token: str
 
-
 class RegisterResponse(BaseModel):
     user_id: str
-
-
-# ── Storage ──────────────────────────────────────────────────────────────────
-
 
 class UploadUrlRequest(BaseModel):
     file_name: str
@@ -45,12 +35,10 @@ class UploadUrlRequest(BaseModel):
     is_public: bool = False
     expires_in: int = 3600
 
-
 class UploadUrlResponse(BaseModel):
     upload_url: str
     object_key: str
     expires_in: int
-
 
 class ConfirmUploadRequest(BaseModel):
     object_key: str
@@ -58,7 +46,6 @@ class ConfirmUploadRequest(BaseModel):
     content_type: Optional[str] = None
     size_bytes: Optional[int] = None
     is_public: bool = False
-
 
 class FileResponse(BaseModel):
     id: int
@@ -74,7 +61,6 @@ class FileResponse(BaseModel):
     is_public: bool
     uploaded_at: datetime
 
-
 class GeoEventCreate(BaseModel):
     user_id: Optional[str] = None
     latitude: float
@@ -89,7 +75,6 @@ class GeoEventCreate(BaseModel):
     app_version: Optional[str] = None
     device_model: Optional[str] = None
     recorded_at: Optional[datetime] = None
-
 
 class GeoEventResponse(BaseModel):
     id: int
@@ -108,18 +93,12 @@ class GeoEventResponse(BaseModel):
     recorded_at: datetime
     created_at: datetime
 
-
-# ── Notifications ────────────────────────────────────────────────────────────
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
-
 class NotificationCreate(BaseModel):
     user_id: str
     token: str
     title: str
     body: str
     data: Optional[dict[str, str]] = None
-
 
 class NotificationResponse(BaseModel):
     id: str
@@ -133,15 +112,11 @@ class NotificationResponse(BaseModel):
     created_at: datetime
     sent_at: Optional[datetime] = None
 
-
-# ── Device Tokens ─────────────────────────────────────────────────────────────
-
 class DeviceTokenCreate(BaseModel):
     user_id: str
     user_name: str
     device_id: str
     fcm_token: str
-
 
 class DeviceTokenResponse(BaseModel):
     id: str

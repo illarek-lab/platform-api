@@ -1,6 +1,5 @@
 import httpx
 
-
 class GoogleOAuthClient:
     TOKENINFO_URL = "https://oauth2.googleapis.com/tokeninfo"
 
@@ -10,6 +9,5 @@ class GoogleOAuthClient:
         if response.status_code != 200:
             return None
         return response.json()
-
 
 google_oauth_client = GoogleOAuthClient()

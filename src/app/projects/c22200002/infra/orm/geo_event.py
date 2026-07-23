@@ -6,7 +6,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from app.projects.c22200002.infra.orm.base import Base
 
-
 class GeoEventORM(Base):
     __tablename__ = "geo_events"
 

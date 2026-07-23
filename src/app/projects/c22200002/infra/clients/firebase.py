@@ -1,5 +1,3 @@
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
 
 import asyncio
 from typing import Optional
@@ -18,7 +16,6 @@ if _cred_path.exists():
         credentials.Certificate(str(_cred_path)),
         name=PROJECT_NAME,
     )
-
 
 class FirebaseClient:
     async def send_notification(
@@ -40,6 +37,5 @@ class FirebaseClient:
         )
 
         return await asyncio.to_thread(messaging.send, message, app=_app)
-
 
 firebase_client = FirebaseClient()

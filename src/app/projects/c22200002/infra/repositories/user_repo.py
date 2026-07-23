@@ -2,7 +2,6 @@ from typing import Any, Optional
 
 from app.projects.c22200002.infra.db.mongo import database
 
-
 class UserRepository:
 
     def __init__(self) -> None:

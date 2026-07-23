@@ -5,7 +5,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from app.projects.c22200002.infra.orm.base import Base
 
-
 class FileORM(Base):
     __tablename__ = "files"
 

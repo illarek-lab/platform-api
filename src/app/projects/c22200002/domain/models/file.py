@@ -3,7 +3,6 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-
 class File(BaseModel):
     id: int
     project_slug: str

@@ -27,41 +27,32 @@ _user_repo = UserRepository()
 _google_client = GoogleOAuthClient()
 _refresh_token_repo = RefreshTokenRepository()
 _auth_service = AuthService(_user_repo, _google_client, _refresh_token_repo, settings.REFRESH_TOKEN_EXPIRE_DAYS)
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
+
 _notification_repo = NotificationRepository()
 _notification_service = NotificationService(_notification_repo, firebase_client)
 _device_token_repo = DeviceTokenRepository()
 
-
 def get_auth_service() -> AuthService:
     return _auth_service
-
 
 def get_notification_service() -> NotificationService:
     return _notification_service
 
-
 def get_device_token_repo() -> DeviceTokenRepository:
     return _device_token_repo
-
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
         yield session
 
-
 def get_geo_event_repo(session: AsyncSession = Depends(get_db_session)) -> GeoEventRepository:
     return GeoEventRepository(session)
-
 
 def get_geo_event_orm_repo(session: AsyncSession = Depends(get_db_session)) -> GeoEventORMRepository:
     return GeoEventORMRepository(session)
 
-
 def get_storage_service(session: AsyncSession = Depends(get_db_session)) -> StorageService:
     return StorageService(FileORMRepository(session), storage_client)
-
 
 def get_current_user(token=Depends(security)):
     try:

@@ -13,7 +13,6 @@ from app.projects.c22200002.infra.settings import PROJECT_NAME
 
 router = APIRouter(prefix="/storage", tags=["storage"])
 
-
 @router.post("/upload-url", response_model=UploadUrlResponse)
 async def get_upload_url(
     payload: UploadUrlRequest,
@@ -28,7 +27,6 @@ async def get_upload_url(
         expires_in=payload.expires_in,
     )
     return UploadUrlResponse(**result)
-
 
 @router.post("/confirm", response_model=FileResponse, status_code=201)
 async def confirm_upload(
@@ -50,7 +48,6 @@ async def confirm_upload(
         raise HTTPException(status_code=403, detail="Invalid object_key for this user") from None
     return FileResponse.model_validate(file.model_dump())
 
-
 @router.get("/files", response_model=list[FileResponse])
 async def list_files(
     limit: int = 50,
@@ -65,7 +62,6 @@ async def list_files(
         offset=offset,
     )
     return [FileResponse.model_validate(f.model_dump()) for f in files]
-
 
 @router.delete("/file/{file_id}", status_code=204)
 async def delete_file(

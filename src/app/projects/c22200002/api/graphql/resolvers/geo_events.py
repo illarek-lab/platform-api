@@ -5,10 +5,8 @@ import strawberry
 from app.projects.c22200002.api.graphql.types import GeoEventInput, GeoEventType
 from app.projects.c22200002.infra.repositories.geo_event_repo import GeoEventRepository
 
-
 def _to_type(event) -> GeoEventType:
     return GeoEventType(**event.model_dump())
-
 
 @strawberry.type
 class GeoEventQuery:
@@ -31,7 +29,6 @@ class GeoEventQuery:
         repo: GeoEventRepository = info.context["repo"]
         events = await repo.find_all(user_id=user_id, event_type=event_type, limit=limit, offset=offset)
         return [_to_type(e) for e in events]
-
 
 @strawberry.type
 class GeoEventMutation:

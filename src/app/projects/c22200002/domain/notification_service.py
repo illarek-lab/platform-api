@@ -1,11 +1,8 @@
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
 
 from typing import Optional
 
 from app.projects.c22200002.domain.models.notification import Notification
 from app.projects.c22200002.domain.ports import IFCMClient, INotificationRepository
-
 
 class NotificationService:
 

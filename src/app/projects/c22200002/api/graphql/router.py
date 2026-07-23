@@ -7,10 +7,8 @@ from app.projects.c22200002.api.deps import get_db_session
 from app.projects.c22200002.api.graphql.resolvers.geo_events import GeoEventMutation, GeoEventQuery
 from app.projects.c22200002.infra.repositories.geo_event_repo import GeoEventRepository
 
-
 async def get_context(session: AsyncSession = Depends(get_db_session)):
     return {"repo": GeoEventRepository(session)}
-
 
 schema = strawberry.Schema(query=GeoEventQuery, mutation=GeoEventMutation)
 

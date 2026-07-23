@@ -2,7 +2,6 @@ import aioboto3
 
 from app.projects.c22200002.infra.settings import settings
 
-
 class StorageClient:
 
     def __init__(self) -> None:
@@ -44,6 +43,5 @@ class StorageClient:
                 Params={"Bucket": self._bucket, "Key": key},
                 ExpiresIn=expires_in,
             )
-
 
 storage_client = StorageClient()

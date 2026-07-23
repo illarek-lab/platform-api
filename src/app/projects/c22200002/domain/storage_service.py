@@ -7,7 +7,6 @@ from app.projects.c22200002.domain.models.file import File
 from app.projects.c22200002.domain.ports import IFileRepository, IStorageClient
 from app.projects.c22200002.infra.settings import settings
 
-
 class StorageService:
 
     def __init__(self, file_repo: IFileRepository, storage_client: IStorageClient) -> None:

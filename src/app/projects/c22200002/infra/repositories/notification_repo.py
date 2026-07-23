@@ -1,5 +1,3 @@
-# NOTA: implementacion por defecto copiada de layout_example para el lab de notificaciones.
-# Reemplazala por tu propia implementacion cuando llegues a ese lab.
 
 from datetime import datetime, timezone
 from typing import Any
@@ -10,7 +8,6 @@ from app.projects.c22200002.domain.models.notification import Notification
 from app.projects.c22200002.infra.db.mongo import database
 
 _collection = database["notifications"]
-
 
 class NotificationRepository:
 

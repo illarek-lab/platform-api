@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.projects.c22200002.domain.models.geo_event import GeoEvent
 
-
 class GeoEventRepository:
 
     def __init__(self, session: AsyncSession) -> None:

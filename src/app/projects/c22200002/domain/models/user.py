@@ -2,7 +2,6 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, EmailStr
 
-
 class UserDocument(BaseModel):
     email: EmailStr
     auth_provider: Literal["local", "google"]

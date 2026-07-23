@@ -4,7 +4,6 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
-
 class GeoEvent(BaseModel):
     id: int
     user_id: Optional[str] = None

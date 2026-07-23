@@ -20,7 +20,6 @@ from app.projects.c22200002.infra.token import create_token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-
 @router.post("/login", response_model=TokenResponse)
 async def login(payload: LoginRequest, service: AuthService = Depends(get_auth_service)):
     try:
@@ -30,7 +29,6 @@ async def login(payload: LoginRequest, service: AuthService = Depends(get_auth_s
     except InvalidCredentialsError:
         raise HTTPException(status_code=401, detail="Invalid credentials") from None
 
-
 @router.post("/register", response_model=RegisterResponse)
 async def register(payload: LoginRequest, service: AuthService = Depends(get_auth_service)):
     try:
@@ -38,7 +36,6 @@ async def register(payload: LoginRequest, service: AuthService = Depends(get_aut
         return RegisterResponse(user_id=user_id)
     except UserAlreadyExistsError:
         raise HTTPException(status_code=400, detail="User already exists") from None
-
 
 @router.post("/google", response_model=TokenResponse)
 async def google_login(payload: GoogleLoginRequest, service: AuthService = Depends(get_auth_service)):
@@ -49,7 +46,6 @@ async def google_login(payload: GoogleLoginRequest, service: AuthService = Depen
     except InvalidGoogleTokenError:
         raise HTTPException(status_code=401, detail="Invalid Google token") from None
 
-
 @router.post("/refresh-token", response_model=TokenResponse)
 async def refresh_token(payload: RefreshTokenRequest, service: AuthService = Depends(get_auth_service)):
     try:
@@ -58,11 +54,9 @@ async def refresh_token(payload: RefreshTokenRequest, service: AuthService = Dep
     except InvalidRefreshTokenError:
         raise HTTPException(status_code=401, detail="Invalid or expired refresh token") from None
 
-
 @router.post("/logout", status_code=204)
 async def logout(payload: LogoutRequest, service: AuthService = Depends(get_auth_service)):
     await service.logout(payload.refresh_token)
-
 
 @router.get("/me")
 async def me(user=Depends(get_current_user)):

@@ -10,7 +10,6 @@ from app.projects.c22200002.domain.exceptions import (
 from app.projects.c22200002.domain.ports import IGoogleOAuthClient, IRefreshTokenRepository, IUserRepository
 from app.projects.c22200002.domain.security import generate_refresh_token_value, hash_password, verify_password
 
-
 class AuthService:
 
     def __init__(

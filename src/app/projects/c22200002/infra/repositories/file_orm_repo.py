@@ -7,7 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.projects.c22200002.domain.models.file import File
 from app.projects.c22200002.infra.orm.file import FileORM
 
-
 class FileORMRepository:
 
     def __init__(self, session: AsyncSession) -> None:

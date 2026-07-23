@@ -8,12 +8,10 @@ _ITERATIONS = 600_000
 _HASH = "sha256"
 _SALT_BYTES = 16
 
-
 def hash_password(password: str) -> str:
     salt = os.urandom(_SALT_BYTES)
     key = hashlib.pbkdf2_hmac(_HASH, password.encode(), salt, _ITERATIONS)
     return f"{_ITERATIONS}:{salt.hex()}:{key.hex()}"
-
 
 def verify_password(password: str, hashed: str) -> bool:
     try:
@@ -24,7 +22,6 @@ def verify_password(password: str, hashed: str) -> bool:
         return hmac.compare_digest(actual, expected)
     except Exception:
         return False
-
 
 def generate_refresh_token_value(expire_days: int) -> tuple[str, datetime.datetime]:
     token = secrets.token_urlsafe(32)

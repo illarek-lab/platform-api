@@ -4,7 +4,6 @@ from uuid import UUID
 
 import strawberry
 
-
 @strawberry.type
 class GeoEventType:
     id: int
@@ -22,7 +21,6 @@ class GeoEventType:
     device_model: Optional[str]
     recorded_at: datetime
     created_at: datetime
-
 
 @strawberry.input
 class GeoEventInput:

@@ -8,11 +8,9 @@ from app.projects.c22200002.infra.repositories.geo_event_orm_repo import GeoEven
 
 router = APIRouter(prefix="/geo-events-orm", tags=["geo-events-orm"])
 
-
 @router.post("/", response_model=GeoEventResponse, status_code=201)
 async def create(payload: GeoEventCreate, repo: GeoEventORMRepository = Depends(get_geo_event_orm_repo)):
     return await repo.create(payload.model_dump())
-
 
 @router.get("/{id}", response_model=GeoEventResponse)
 async def get_by_id(id: int, repo: GeoEventORMRepository = Depends(get_geo_event_orm_repo)):
@@ -20,7 +18,6 @@ async def get_by_id(id: int, repo: GeoEventORMRepository = Depends(get_geo_event
     if not event:
         raise HTTPException(status_code=404, detail="Geo event not found")
     return event
-
 
 @router.get("/", response_model=list[GeoEventResponse])
 async def get_all(
@@ -31,7 +28,6 @@ async def get_all(
     repo: GeoEventORMRepository = Depends(get_geo_event_orm_repo),
 ):
     return await repo.find_all(user_id=user_id, event_type=event_type, limit=limit, offset=offset)
-
 
 @router.delete("/{id}", status_code=204)
 async def delete(id: int, repo: GeoEventORMRepository = Depends(get_geo_event_orm_repo)):

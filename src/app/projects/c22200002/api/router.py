@@ -11,11 +11,9 @@ from app.projects.c22200002.infra.settings import PROJECT_NAME
 
 router = APIRouter()
 
-
 @router.get("/health")
 async def health():
     return {"project": PROJECT_NAME, "status": "ok"}
-
 
 router.include_router(auth_router)
 router.include_router(geo_events_router)
