@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="746aa388-af8e-4da8-ad5a-82458f83c1b0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/app/projects/c22200043/api/deps.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/c22200043/api/deps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/projects/c22200043/api/geo_events.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/c22200043/api/geo_events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/projects/c22200043/api/geo_events_orm.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/c22200043/api/geo_events_orm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/projects/c22200043/api/graphql/resolvers/geo_events.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/c22200043/api/graphql/resolvers/geo_events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/projects/c22200043/api/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/c22200043/api/router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/projects/c22200043/api/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/c22200043/api/storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/projects/layout_example/infra/repositories/geo_event_orm_repo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/layout_example/infra/repositories/geo_event_orm_repo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/projects/layout_example/infra/repositories/geo_event_repo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/layout_example/infra/repositories/geo_event_repo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/projects/layout_example/infra/repositories/user_repo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/projects/layout_example/infra/repositories/user_repo.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="372" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0000202741365676" />
+      <entry key="MS500" value="1.115183023274838" />
+      <entry key="S2" value="1.582568661163645" />
+      <entry key="S5" value="1.8056360149390218" />
+      <entry key="S10" value="1.8977885309743736" />
+      <entry key="S30" value="2.02603248285553" />
+      <entry key="S60" value="2.279819501772887" />
+      <entry key="M2" value="2.8105595309422644" />
+      <entry key="M5" value="3.7175418767894626" />
+      <entry key="M10" value="4.257197894197533" />
+      <entry key="M15" value="4.478678102772905" />
+      <entry key="M30" value="4.725254562409304" />
+      <entry key="H1" value="4.858899499047839" />
+      <entry key="H2" value="4.928490606304862" />
+      <entry key="H4" value="4.964002028413411" />
+      <entry key="D1" value="4.9939662495364034" />
+      <entry key="W1" value="4.999137196881082" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.9726745309373337" />
+      <entry key="MS500" value="1.1088575646892054" />
+      <entry key="S2" value="1.5801746868749544" />
+      <entry key="S5" value="1.8045234200368432" />
+      <entry key="S10" value="1.8972001397373797" />
+      <entry key="S30" value="2.025813532788832" />
+      <entry key="S60" value="2.2796645062402434" />
+      <entry key="M2" value="2.8104055943522117" />
+      <entry key="M5" value="3.717415697234937" />
+      <entry key="M10" value="4.257114106333591" />
+      <entry key="M15" value="4.47861645767372" />
+      <entry key="M30" value="4.725220485636217" />
+      <entry key="H1" value="4.858881572340509" />
+      <entry key="H2" value="4.928481410852168" />
+      <entry key="H4" value="4.963997371365442" />
+      <entry key="D1" value="4.993965465010422" />
+      <entry key="W1" value="4.999137084599943" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3FOSt36Cpv1V1H5I9Rj9jkd0Sit" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.auth.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/Universidad/desarrollo de sistemas moviles/platform-api/src/app/projects",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory",
+      "repository"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Universidad\desarrollo de sistemas moviles\platform-api\src\app\projects" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="auth" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="platform-api" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/app/projects/c22200043/api" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/app/projects/c22200043/api/auth.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.auth" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-c59985aa861c-c2ffad84badb-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.24374.152" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="746aa388-af8e-4da8-ad5a-82458f83c1b0" name="Changes" comment="" />
+      <created>1781944833853</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1781944833853</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
